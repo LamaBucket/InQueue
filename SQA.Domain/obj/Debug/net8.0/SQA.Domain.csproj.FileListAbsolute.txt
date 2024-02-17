@@ -1,0 +1,11 @@
+/Users/gleb/Development/SQA/SQA.Domain/bin/Debug/net8.0/SQA.Domain.deps.json
+/Users/gleb/Development/SQA/SQA.Domain/bin/Debug/net8.0/SQA.Domain.dll
+/Users/gleb/Development/SQA/SQA.Domain/bin/Debug/net8.0/SQA.Domain.pdb
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/SQA.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/SQA.Domain.AssemblyInfoInputs.cache
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/SQA.Domain.AssemblyInfo.cs
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/SQA.Domain.csproj.CoreCompileInputs.cache
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/SQA.Domain.dll
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/refint/SQA.Domain.dll
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/SQA.Domain.pdb
+/Users/gleb/Development/SQA/SQA.Domain/obj/Debug/net8.0/ref/SQA.Domain.dll
