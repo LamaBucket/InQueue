@@ -1203,8 +1203,8 @@
     },
     "SQA.EntityFramework/1.0.0": {
       "type": "project",
-      "path": "../SQA.EntityFramework/SQA.EntityFramework.csproj",
-      "msbuildProject": "../SQA.EntityFramework/SQA.EntityFramework.csproj"
+      "path": "../sqa.entityframework/SQA.EntityFramework.csproj",
+      "msbuildProject": "../sqa.entityframework/SQA.EntityFramework.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1241,8 +1241,8 @@
             "/Users/gleb/Development/SQA/SQA.Domain/SQA.Domain.csproj": {
               "projectPath": "/Users/gleb/Development/SQA/SQA.Domain/SQA.Domain.csproj"
             },
-            "/Users/gleb/Development/SQA/SQA.EntityFramework/SQA.EntityFramework.csproj": {
-              "projectPath": "/Users/gleb/Development/SQA/SQA.EntityFramework/SQA.EntityFramework.csproj"
+            "/Users/gleb/Development/SQA/sqa.entityframework/SQA.EntityFramework.csproj": {
+              "projectPath": "/Users/gleb/Development/SQA/sqa.entityframework/SQA.EntityFramework.csproj"
             }
           }
         }

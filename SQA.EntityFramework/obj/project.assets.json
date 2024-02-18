@@ -1200,11 +1200,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/gleb/Development/SQA/SQA.EntityFramework/SQA.EntityFramework.csproj",
+      "projectUniqueName": "/Users/gleb/Development/SQA/sqa.entityframework/SQA.EntityFramework.csproj",
       "projectName": "SQA.EntityFramework",
-      "projectPath": "/Users/gleb/Development/SQA/SQA.EntityFramework/SQA.EntityFramework.csproj",
+      "projectPath": "/Users/gleb/Development/SQA/sqa.entityframework/SQA.EntityFramework.csproj",
       "packagesPath": "/Users/gleb/.nuget/packages/",
-      "outputPath": "/Users/gleb/Development/SQA/SQA.EntityFramework/obj/",
+      "outputPath": "/Users/gleb/Development/SQA/sqa.entityframework/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/gleb/.nuget/NuGet/NuGet.Config"
