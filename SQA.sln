@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Test", "SQA.Test\SQA.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.EntityFramework", "SQA.EntityFramework\SQA.EntityFramework.csproj", "{0E29C092-98CF-4727-8301-8DC6D80CA3CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Web", "SQA.Web\SQA.Web.csproj", "{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,5 +36,9 @@ Global
 		{0E29C092-98CF-4727-8301-8DC6D80CA3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E29C092-98CF-4727-8301-8DC6D80CA3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E29C092-98CF-4727-8301-8DC6D80CA3CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
