@@ -12,4 +12,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SQA.Domain\SQA.Domain.csproj" />
+    <ProjectReference Include="..\SQA.EntityFramework\SQA.EntityFramework.csproj" />
+  </ItemGroup>
+
 </Project>

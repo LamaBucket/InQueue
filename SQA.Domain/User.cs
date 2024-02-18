@@ -5,7 +5,7 @@ namespace SQA.Domain;
 public class User : DomainObject
 {
 
-    public string FullName { get; internal set; }
+    public string FullName { get; set; }
 
     public string Username { get; init; }
 
@@ -25,14 +25,6 @@ public class User : DomainObject
         {
             string newPasswordHash = _passwordHasher.HashString(newPassword);
             _passwordHash = newPasswordHash;
-        }
-    }
-
-    public void UpdateFullName(string password, string name)
-    {
-        if (ValidatePassword(password))
-        {
-            FullName = name;
         }
     }
 
