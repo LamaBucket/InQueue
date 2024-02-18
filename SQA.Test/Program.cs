@@ -61,6 +61,7 @@ internal class Program
                         print("queue.delete - Delete Queue");
                         print("queue.view.details - Display Details Of 1 Queue");
                         print("queue.view.info - Display Details Of Queues where some user is present.");
+                        print("queue.view.info.all - Display Details Of All Queues.");
                         print("queue.addUser - Add User to Queue");
                         print("queue.removeRecord - Remove Record from Queue");
                         print("queue.moveNext - Move To The Next Person in Queue");
@@ -99,6 +100,9 @@ internal class Program
                             var info = infos[i];
                             print($"> Id: {info.Id}; Name: {info.Name}; DateTime Created: {info.Created}");
                         }
+                        break;
+                    case "queue.view.info.all":
+                        await PrintQueuesInfo();
                         break;
                     case "queue.view.details":
                         var queue = await SelectQueue();
@@ -149,6 +153,19 @@ internal class Program
             {
                 print("Error: " + ex.Message);
             }
+        }
+    }
+
+    private static async Task PrintQueuesInfo()
+    {
+        var infos = (await queueDataSerivce.GetAll()).ToList();
+
+        print($"Queues:");
+
+        for (int i = 0; i < infos.Count; i++)
+        {
+            var info = infos[i];
+            print($"> Id: {info.Id}; Name: {info.Name}; DateTime Created: {info.Created}");
         }
     }
 
