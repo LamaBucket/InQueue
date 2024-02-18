@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HnTfehw9H3b0AX+RmIvG4gmHUMv2YgkvHycaOK+eG6cYEAGvrd7gRT+Ht6kQC5p0khxNfMp252LN8JFpXoAOsw==",
+  "dgSpecHash": "QRSC4tkW23V+xywUymGbVyjC/76gWak20ccBpzcqZXEEdA3ON6doojZg/pV7WmfKctKPMIxkUe+tcvJXCTppMQ==",
   "success": true,
-  "projectFilePath": "/Users/gleb/Development/SQA/SQA.EntityFramework/SQA.EntityFramework.csproj",
+  "projectFilePath": "/Users/gleb/Development/SQA/sqa.entityframework/SQA.EntityFramework.csproj",
   "expectedPackageFiles": [
     "/Users/gleb/.nuget/packages/microsoft.data.sqlite.core/8.0.1/microsoft.data.sqlite.core.8.0.1.nupkg.sha512",
     "/Users/gleb/.nuget/packages/microsoft.entityframeworkcore/8.0.1/microsoft.entityframeworkcore.8.0.1.nupkg.sha512",

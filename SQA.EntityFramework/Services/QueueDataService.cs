@@ -14,6 +14,18 @@ public class QueueDataService : IQueueDataService
     private readonly IQueueBuilder _queueBuilder;
 
 
+    public async Task<IEnumerable<QueueInfo>> GetAll()
+    {
+        using (var dbContext = _contextFactory.CreateDbContext())
+        {
+            var queueItems = await dbContext.Set<QueueItem>().ToListAsync();
+
+            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, DateTime.Now));
+
+            return queues;
+        }
+    }
+
     public async Task<Queue> Get(int id)
     {
         using (var dbContext = _contextFactory.CreateDbContext())
@@ -60,15 +72,32 @@ public class QueueDataService : IQueueDataService
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
-            QueueItem item = new(queue.QueueInfo.Id, queue.QueueInfo.Name, queue.IsInfinite, queue.CurrentPosition);
+            int queueId = queue.QueueInfo.Id;
 
-            var records = queue.Records.Select(x => new QueueRecordItem(x.Username, queue.QueueInfo.Id, x.Position)).ToList();
+            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.IsInfinite, queue.CurrentPosition);
 
-            item.Records = records;
+            dbContext.Set<QueueItem>().Update(item);
 
-            await Delete(item.QueueId);
+            await dbContext.SaveChangesAsync();
 
-            await dbContext.Set<QueueItem>().AddAsync(item);
+            item = await dbContext.Set<QueueItem>().Include(x => x.Records).FirstAsync(x => x.QueueId == queueId);
+
+            if (item.Records is not null)
+            {
+                var records = item.Records;
+                var queueRecords = queue.Records;
+
+                records.Clear();
+
+                foreach (var queueRecord in queueRecords)
+                {
+                    QueueRecordItem queueRecordItem = new(queueRecord.Username, queueId, queueRecord.Position);
+
+                    records.Add(queueRecordItem);
+                }
+            }
+
+            dbContext.Set<QueueItem>().Update(item);
 
             await dbContext.SaveChangesAsync();
         }

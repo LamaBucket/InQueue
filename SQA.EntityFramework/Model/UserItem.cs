@@ -2,8 +2,6 @@ namespace SQA.EntityFramework.Model;
 
 public class UserItem : DataTableObject
 {
-    public List<QueueItem>? Queues { get; set; }
-
     public List<QueueRecordItem>? Records { get; set; }
 
     public string FullName { get; set; }

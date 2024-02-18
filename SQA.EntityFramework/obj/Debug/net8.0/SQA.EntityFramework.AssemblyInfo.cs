@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SQA.EntityFramework")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c61c092ac400a99e15903408daef0b21e88da200")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67b11477926e8dcac37573accb7b0e215e56a49f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SQA.EntityFramework")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SQA.EntityFramework")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

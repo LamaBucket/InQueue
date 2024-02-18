@@ -5,8 +5,6 @@ public class QueueItem : DataTableObject
 {
     public int QueueId { get; set; }
 
-    public List<UserItem>? Users { get; set; }
-
     public List<QueueRecordItem>? Records { get; set; }
 
     public string QueueName { get; set; }
