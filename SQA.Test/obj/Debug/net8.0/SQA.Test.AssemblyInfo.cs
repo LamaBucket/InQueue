@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SQA.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67b11477926e8dcac37573accb7b0e215e56a49f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47afbfd88d7f822ea9fef4a22122e161ee1f228f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SQA.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SQA.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
