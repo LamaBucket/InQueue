@@ -25,7 +25,7 @@ public class LogonController : Controller
             return SignIn(principal);
         }
 
-        return Unauthorized();
+        return BadRequest();
     }
 
     public LogonController(IUserDataService userDataService)

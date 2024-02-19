@@ -43,14 +43,9 @@ public class UserController : AuthenticatedController
     [HttpDelete]
     public async Task<ActionResult> DeleteUser()
     {
-        if (await CanManageUsers())
-        {
-            await _userDataService.Delete(_username);
+        await _userDataService.Delete(_username);
 
-            return Ok();
-        }
-
-        return Forbid();
+        return Ok();
     }
 
     [HttpPost]
