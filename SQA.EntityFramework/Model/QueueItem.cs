@@ -13,17 +13,22 @@ public class QueueItem : DataTableObject
 
     public int CurrentPosition { get; set; }
 
-    internal QueueItem(string queueName, bool isInfinite)
+    public DateTime DateCreated { get; set; }
+
+
+    internal QueueItem(string queueName, bool isInfinite, DateTime dateCreated)
     {
         QueueName = queueName;
         IsInfinite = isInfinite;
+        DateCreated = dateCreated;
     }
 
-    internal QueueItem(int queueId, string queueName, bool isInfinite, int currentPosition)
+    internal QueueItem(int queueId, string queueName, bool isInfinite, int currentPosition, DateTime dateCreated)
     {
         QueueId = queueId;
         QueueName = queueName;
         IsInfinite = isInfinite;
         CurrentPosition = currentPosition;
+        DateCreated = dateCreated;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using SQA.Domain;
 using SQA.Domain.Services;
 using SQA.Domain.Services.Data;
@@ -21,6 +23,8 @@ internal class Program
 
     public static IQueueDataService queueDataSerivce = null!;
 
+    public static IUserRoleDataService userRoleDataService = null!;
+
     public static async Task Main(string[] args)
     {
         SQADbContextFactory contextFactory = new();
@@ -32,10 +36,9 @@ internal class Program
 
         IUserPasswordProvider userPasswordProvider = new UserPasswordProvider();
 
-        IDataConverter<UserItem, User> userConverter = new UserDataConverter(userBuilder, userPasswordProvider);
-
-        userDataService = new UserDataService(contextFactory, userConverter, passwordHasher);
+        userDataService = new UserDataService(contextFactory, passwordHasher, userBuilder, userPasswordProvider);
         queueDataSerivce = new QueueDataService(contextFactory, queueBuilder);
+        userRoleDataService = new UserRoleDataService(contextFactory);
 
         print("Welcome To Test Console App of Simple-Queueing-Application (SQA)");
         print("Type help to get the basic info of commands you can use.");
@@ -49,6 +52,8 @@ internal class Program
                 continue;
             try
             {
+                bool commandUsed = true;
+
                 switch (text)
                 {
                     case "help":
@@ -65,9 +70,15 @@ internal class Program
                         print("queue.addUser - Add User to Queue");
                         print("queue.removeRecord - Remove Record from Queue");
                         print("queue.moveNext - Move To The Next Person in Queue");
+
+                        print("role.view - Display All Current Roles");
+                        print("role.add - Create Role");
+                        print("role.delete - Delete Role");
+                        commandUsed = false;
                         break;
                     case "exit":
                         flag = false;
+                        commandUsed = false;
                         break;
                     case "user.add":
                         await CreateUser();
@@ -85,7 +96,7 @@ internal class Program
                         await StartUserPasswordUpdate();
                         break;
                     case "user.rename":
-                        await StartUserPasswordUpdate();
+                        await StartUserRename();
                         break;
 
                     case "queue.view.info":
@@ -146,14 +157,56 @@ internal class Program
 
                         await queueDataSerivce.Update(current);
                         break;
+                    case "role.add":
+                        await AddRole();
+                        break;
+                    case "role.view":
+                        await ViewRoles();
+                        break;
+                    case "role.delete":
+                        await DeleteRole();
+                        break;
+                    default:
+                        print("Unknown command. type 'help' to help");
+                        commandUsed = false;
+                        break;
 
                 }
+
+                if (commandUsed)
+                    print("Process was ended. Waiting for new commands");
             }
             catch (Exception ex)
             {
                 print("Error: " + ex.Message);
             }
         }
+    }
+
+    private static async Task DeleteRole()
+    {
+        var role = await SelectUserRole();
+
+        await userRoleDataService.Delete(role.Id);
+    }
+
+    private static async Task ViewRoles()
+    {
+        var roles = (await userRoleDataService.GetAllRoles()).ToArray();
+
+        foreach (var role in roles)
+        {
+            print($"> Role Name: {role.Name}; Id: {role.Id}; Can Manage Users: {role.CanManageUsers}; Can Manage Queues: {role.CanManageQueues};");
+        }
+    }
+
+    private static async Task AddRole()
+    {
+        string roleName = read("Role Name:");
+        bool canManageUsers = read("Can Manage Users? (true/false)").ToLower() == "true";
+        bool canManageQueues = read("Role Name Queues? (true/false)").ToLower() == "true";
+
+        await userRoleDataService.Create(roleName, canManageUsers, canManageQueues);
     }
 
     private static async Task PrintQueuesInfo()
@@ -208,7 +261,25 @@ internal class Program
         string username = read("Username:");
         string password = read("Password:");
 
-        await userDataService.Create(username, fullName, password);
+        UserRole role = await SelectUserRole();
+
+        await userDataService.Create(username, fullName, password, role.Id);
+    }
+
+    private static async Task<UserRole> SelectUserRole()
+    {
+        print("Please select User Role (enter Id):");
+
+        var roles = (await userRoleDataService.GetAllRoles()).ToArray();
+
+        foreach (var role in roles)
+        {
+            print($"> Role Name: {role.Name}; Id: {role.Id}; Can Manage Users: {role.CanManageUsers}; Can Manage Queues: {role.CanManageQueues};");
+        }
+
+        int id = int.Parse(read(string.Empty));
+
+        return roles.First(x => x.Id == id);
     }
 
     private static async Task StartUserPasswordUpdate()
@@ -227,12 +298,11 @@ internal class Program
     private static async Task StartUserRename()
     {
         string username = read("Enter Username:");
-        string password = read("Enter Password:");
         string fullName = read("Enter New Full Name:");
 
         User user = await userDataService.Get(username);
 
-        user.UpdateFullName(password, fullName);
+        user.FullName = fullName;
 
         await userDataService.Update(user);
     }

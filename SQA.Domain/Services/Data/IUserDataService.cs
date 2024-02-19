@@ -8,7 +8,7 @@ public interface IUserDataService
 
     Task<User> Get(string username);
 
-    Task Create(string username, string fullName, string password);
+    Task Create(string username, string fullName, string password, int roleId);
 
     Task Update(User user);
 

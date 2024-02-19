@@ -9,10 +9,15 @@ public class SQADbContext : DbContext
 
     public DbSet<QueueItem> Queues { get; set; } = null!;
 
+    public DbSet<UserRoleItem> Roles { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserItem>().HasKey(e => e.Username);
         modelBuilder.Entity<QueueItem>().HasKey(e => e.QueueId);
+        modelBuilder.Entity<UserRoleItem>().HasKey(e => e.Id);
+
+        modelBuilder.Entity<UserItem>().HasOne(x => x.Role).WithMany(x => x.User).HasForeignKey(x => x.RoleId);
 
         modelBuilder.Entity<UserItem>()
             .HasMany<QueueItem>()

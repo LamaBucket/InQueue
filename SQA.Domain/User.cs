@@ -9,6 +9,9 @@ public class User : DomainObject
 
     public string Username { get; init; }
 
+    public UserRole Role { get; set; }
+
+
     private string _passwordHash;
 
     private readonly IStringHasher _passwordHasher;
@@ -36,10 +39,12 @@ public class User : DomainObject
     internal User(string fullName,
                   string username,
                   string passwordHash,
+                  UserRole role,
                   IStringHasher passwordHasher)
     {
         FullName = fullName;
         Username = username;
+        Role = role;
 
         _passwordHash = passwordHash;
 

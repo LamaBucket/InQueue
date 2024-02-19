@@ -11,9 +11,12 @@ public class UserDataService : IUserDataService
 {
     private readonly SQADbContextFactory _contextFactory;
 
-    private readonly IDataConverter<UserItem, User> _converter;
+    private readonly IUserBuilder _userBuilder;
+
+    private readonly IUserPasswordProvider _passwordProvider;
 
     private readonly IStringHasher _passwordHasher;
+
 
     public async Task Delete(string username)
     {
@@ -34,12 +37,19 @@ public class UserDataService : IUserDataService
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
-            var userItem = await dbContext.Set<UserItem>().FirstOrDefaultAsync(x => x.Username == username);
+            var userItem = await dbContext.Set<UserItem>().Include(x => x.Role).FirstOrDefaultAsync(x => x.Username == username);
 
             if (userItem is null)
                 throw new Exception();
 
-            var user = _converter.Convert(userItem);
+            if (userItem.Role is null)
+                throw new Exception();
+
+            UserRoleItem roleItem = userItem.Role;
+
+            UserRole role = new(roleItem.Id, roleItem.Name, roleItem.CanManageUsers, roleItem.CanManageQueues);
+
+            User user = _userBuilder.CreateUser(userItem.FullName, userItem.Username, role, userItem.PasswordHash);
 
             return user;
         }
@@ -49,7 +59,9 @@ public class UserDataService : IUserDataService
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
-            var userItem = _converter.Convert(user);
+            string passwordHash = _passwordProvider.GetPasswordHash(user);
+
+            UserItem userItem = new(user.FullName, user.Username, passwordHash, user.Role.Id);
 
             dbContext.Set<UserItem>().Update(userItem);
 
@@ -57,13 +69,13 @@ public class UserDataService : IUserDataService
         }
     }
 
-    public async Task Create(string username, string fullName, string password)
+    public async Task Create(string username, string fullName, string password, int roleId)
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
             string passwordHash = _passwordHasher.HashString(password);
 
-            var userItem = new UserItem(fullName, username, passwordHash);
+            var userItem = new UserItem(fullName, username, passwordHash, roleId);
 
             await dbContext.Set<UserItem>().AddAsync(userItem);
 
@@ -75,20 +87,35 @@ public class UserDataService : IUserDataService
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
-            var userItems = await dbContext.Set<UserItem>().ToListAsync();
+            var userItems = await dbContext.Set<UserItem>().Include(x => x.Role).ToListAsync();
 
-            var users = userItems.Select(_converter.Convert);
+            List<User> users = new();
+
+            foreach (var userItem in userItems)
+            {
+                if (userItem.Role is null)
+                    throw new Exception();
+
+                UserRoleItem roleItem = userItem.Role;
+                UserRole userRole = new(roleItem.Id, roleItem.Name, roleItem.CanManageUsers, roleItem.CanManageQueues);
+
+                User user = _userBuilder.CreateUser(userItem.FullName, userItem.Username, userRole, userItem.PasswordHash);
+
+                users.Add(user);
+            }
 
             return users;
         }
     }
 
     public UserDataService(SQADbContextFactory contextFactory,
-                           IDataConverter<UserItem, User> converter,
-                           IStringHasher passwordHasher)
+                           IStringHasher passwordHasher,
+                           IUserBuilder userBuilder,
+                           IUserPasswordProvider passwordProvider)
     {
         _contextFactory = contextFactory;
-        _converter = converter;
         _passwordHasher = passwordHasher;
+        _userBuilder = userBuilder;
+        _passwordProvider = passwordProvider;
     }
 }

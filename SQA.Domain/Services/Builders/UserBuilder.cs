@@ -4,9 +4,9 @@ public class UserBuilder : IUserBuilder
 {
     public IStringHasher PasswordHasher { get; init; }
 
-    public User CreateUser(string fullName, string username, string passwordHash)
+    public User CreateUser(string fullName, string username, UserRole role, string passwordHash)
     {
-        return new User(fullName, username, passwordHash, PasswordHasher);
+        return new User(fullName, username, passwordHash, role, PasswordHasher);
     }
 
     public UserBuilder(IStringHasher passwordHasher)

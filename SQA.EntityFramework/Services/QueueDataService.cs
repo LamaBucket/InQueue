@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using SQA.Domain;
@@ -20,7 +21,7 @@ public class QueueDataService : IQueueDataService
         {
             var queueItems = await dbContext.Set<QueueItem>().ToListAsync();
 
-            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, DateTime.Now));
+            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, x.DateCreated));
 
             return queues;
         }
@@ -37,7 +38,7 @@ public class QueueDataService : IQueueDataService
 
             var queueRecords = queueItem.Records.Select(x => new QueueRecord(x.Position, x.Username));
 
-            var queueInfo = _queueBuilder.CreateQueueInfo(queueItem.QueueId, queueItem.QueueName, DateTime.Now);
+            var queueInfo = _queueBuilder.CreateQueueInfo(queueItem.QueueId, queueItem.QueueName, queueItem.DateCreated);
             var queue = _queueBuilder.CreateQueue(queueInfo, queueItem.CurrentPosition, queueItem.IsInfinite, queueRecords);
 
             return queue;
@@ -50,7 +51,7 @@ public class QueueDataService : IQueueDataService
         {
             var queueItems = await dbContext.Set<QueueItem>().Include(x => x.Records!.Where(r => r.Username == username)).ToListAsync();
 
-            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, DateTime.Now));
+            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, x.DateCreated));
 
             return queues;
         }
@@ -60,7 +61,9 @@ public class QueueDataService : IQueueDataService
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
-            var queueItem = new QueueItem(queueName, isInfinite);
+            var dateCreated = DateTime.Now;
+
+            var queueItem = new QueueItem(queueName, isInfinite, dateCreated);
 
             await dbContext.Set<QueueItem>().AddAsync(queueItem);
 
@@ -74,7 +77,7 @@ public class QueueDataService : IQueueDataService
         {
             int queueId = queue.QueueInfo.Id;
 
-            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.IsInfinite, queue.CurrentPosition);
+            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.IsInfinite, queue.CurrentPosition, queue.QueueInfo.Created);
 
             dbContext.Set<QueueItem>().Update(item);
 
