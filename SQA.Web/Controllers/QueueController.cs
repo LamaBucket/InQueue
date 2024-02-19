@@ -3,16 +3,8 @@ using SQA.Domain.Services.Data;
 
 namespace SQA.Web.Controllers;
 
-public class QueueController : Controller
+public class QueueController : AuthenticatedController
 {
-    private string _username
-    {
-        get
-        {
-            return ""; //TODO: Get username from cookies;
-        }
-    }
-
     public readonly IQueueDataService _queueDataService;
 
 

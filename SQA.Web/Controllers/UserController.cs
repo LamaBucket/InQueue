@@ -4,18 +4,9 @@ using SQA.Domain.Services.Data;
 namespace SQA.Web.Controllers;
 
 
-public class UserController : Controller
+public class UserController : AuthenticatedController
 {
     private readonly IUserDataService _userDataService;
-
-    private string _username
-    {
-        get
-        {
-            return ""; //TODO: Get username from cookies;
-        }
-    }
-
 
     [HttpGet]
     public async Task<ActionResult> GetUserInfo()
