@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SQA.Domain.Services.Data;
 
 namespace SQA.Web.Controllers;
-
 
 public class UserController : AuthenticatedController
 {
@@ -43,12 +43,37 @@ public class UserController : AuthenticatedController
     [HttpDelete]
     public async Task<ActionResult> DeleteUser()
     {
-        await _userDataService.Delete(_username);
+        if (await CanManageUsers())
+        {
+            await _userDataService.Delete(_username);
 
-        return Ok();
+            return Ok();
+        }
+
+        return Forbid();
     }
 
-    public UserController(IUserDataService userDataService)
+    [HttpPost]
+    public async Task<ActionResult> CreateUser(string username, string fullName, string password, int roleId)
+    {
+        if (await CanManageUsers())
+        {
+            await _userDataService.Create(username, fullName, password, roleId);
+
+            return Ok();
+        }
+
+        return Forbid();
+    }
+
+    private async Task<bool> CanManageUsers()
+    {
+        var role = await GetUserRole();
+
+        return role.CanManageUsers;
+    }
+
+    public UserController(IUserDataService userDataService) : base(userDataService)
     {
         _userDataService = userDataService;
     }

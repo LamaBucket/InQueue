@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SQA.Domain.Services.Data;
 
@@ -24,7 +25,7 @@ public class QueueController : AuthenticatedController
         return Json(queues);
     }
 
-    [HttpPost]
+    [HttpPost("/user")]
     public async Task<ActionResult> SignInQueue(int queueId)
     {
         var queue = await _queueDataService.Get(queueId);
@@ -36,7 +37,7 @@ public class QueueController : AuthenticatedController
         return Ok();
     }
 
-    [HttpDelete]
+    [HttpDelete("/user")]
     public async Task<ActionResult> LeaveQueue(int queueId)
     {
         var queue = await _queueDataService.Get(queueId);
@@ -50,7 +51,7 @@ public class QueueController : AuthenticatedController
         return Ok();
     }
 
-    [HttpPut]
+    [HttpPut("/user")]
     public async Task<ActionResult> MoveNext(int queueId)
     {
         var queue = await _queueDataService.Get(queueId);
@@ -69,11 +70,45 @@ public class QueueController : AuthenticatedController
             return Ok();
         }
 
-        return BadRequest();
+        return Forbid();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> CreateQueue(string name, bool isInfinite)
+    {
+        if (await CanManageQueue())
+        {
+            await _queueDataService.Create(name, isInfinite);
+
+            return Ok();
+        }
+
+        return Forbid();
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> RemoveQueue(int id)
+    {
+        if (await CanManageQueue())
+        {
+            await _queueDataService.Delete(id);
+
+            return Ok();
+        }
+
+        return Forbid();
     }
 
 
-    public QueueController(IQueueDataService queueDataService)
+    private async Task<bool> CanManageQueue()
+    {
+        var role = await GetUserRole();
+
+        return role.CanManageQueues;
+    }
+
+
+    public QueueController(IQueueDataService queueDataService, IUserDataService userDataService) : base(userDataService)
     {
         _queueDataService = queueDataService;
     }

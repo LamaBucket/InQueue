@@ -1,9 +1,35 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SQA.Domain;
+using SQA.Domain.Services;
+using SQA.Domain.Services.Data;
+using SQA.EntityFramework;
+using SQA.EntityFramework.Services;
+using SQA.Web;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.Cookie.Name = "Authentication";
+});
+builder.Services.AddAuthorization();
+
+builder.Services.AddTransient<SQADbContextFactory>();
+
+builder.Services.AddScoped<IUserDataService, UserDataService>();
+builder.Services.AddScoped<IQueueDataService, QueueDataService>();
+
+builder.Services.AddScoped<IStringHasher, PasswordHasher>();
+builder.Services.AddScoped<IUserBuilder, UserBuilder>();
+builder.Services.AddScoped<IUserPasswordProvider, UserPasswordProvider>();
+
+builder.Services.AddScoped<IQueueBuilder, QueueBuilder>();
+
 
 var app = builder.Build();
 
@@ -16,26 +42,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.UseMvc();
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers();
 
 app.Run();
 

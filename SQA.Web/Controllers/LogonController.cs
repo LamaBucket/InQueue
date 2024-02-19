@@ -1,14 +1,15 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using SQA.Domain.Services.Data;
 
 namespace SQA.Web.Controllers;
 
-[Route("logon")]
+[Route("Authenticate")]
 public class LogonController : Controller
 {
     private readonly IUserDataService _userDataService;
 
-    [HttpGet]
+    [HttpPost]
     public async Task<ActionResult> Login(string username, string password)
     {
         var user = await _userDataService.Get(username);
@@ -17,9 +18,11 @@ public class LogonController : Controller
 
         if (passwordValid)
         {
-            //TODO: Implement authorization logic;
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, username) };
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            ClaimsPrincipal principal = new(identity);
 
-            return Ok();
+            return SignIn(principal);
         }
 
         return Unauthorized();
