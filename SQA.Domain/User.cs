@@ -1,4 +1,5 @@
-﻿using SQA.Domain.Services;
+﻿using SQA.Domain.Exceptions;
+using SQA.Domain.Services;
 
 namespace SQA.Domain;
 
@@ -25,10 +26,10 @@ public class User : DomainObject
     public void UpdatePassword(string oldPassword, string newPassword)
     {
         if (ValidatePassword(oldPassword))
-        {
-            string newPasswordHash = _passwordHasher.HashString(newPassword);
-            _passwordHash = newPasswordHash;
-        }
+            throw new InvalidPasswordException(Username);
+
+        string newPasswordHash = _passwordHasher.HashString(newPassword);
+        _passwordHash = newPasswordHash;
     }
 
     internal string GetPasswordHash()

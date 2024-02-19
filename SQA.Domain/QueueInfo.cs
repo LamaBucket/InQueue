@@ -4,14 +4,9 @@ public class QueueInfo
 {
     public int Id { get; init; }
 
-    public string Name { get; protected set; }
+    public string Name { get; set; }
 
     public DateTime Created { get; init; }
-
-    public void UpdateName(string name)
-    {
-        Name = name;
-    }
 
     internal QueueInfo(int id, string name, DateTime created)
     {

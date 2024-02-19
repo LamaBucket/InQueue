@@ -1,3 +1,5 @@
+using SQA.Domain.Exceptions;
+
 namespace SQA.Domain;
 
 public class Queue : DomainObject
@@ -20,6 +22,9 @@ public class Queue : DomainObject
 
     public void MoveToNext()
     {
+        if (_records.Count == 0)
+            throw new EmptyQueueException(QueueInfo.Id);
+
         bool isLast = CurrentPosition == _records.Count - 1;
 
         if (isLast)
@@ -36,7 +41,7 @@ public class Queue : DomainObject
     public void AddUser(string username)
     {
         if (ContainsRecord(username))
-            throw new Exception("This User is already in this Queue!");
+            throw new UserAlreadyExistsInQueueException(username, QueueInfo.Id);
 
         int numberOfUsers = _records.Count;
 
@@ -53,14 +58,14 @@ public class Queue : DomainObject
 
     public void RemoveRecord(QueueRecord record)
     {
-        if (ContainsRecord(record))
-        {
-            _currentPosition -= 1;
+        if (!ContainsRecord(record))
+            throw new RecordDoesNotExist(QueueInfo.Id, record);
 
-            _records.Remove(record);
+        _currentPosition -= 1;
 
-            MoveToNext();
-        }
+        _records.Remove(record);
+
+        MoveToNext();
     }
 
     private bool ContainsRecord(QueueRecord record)
