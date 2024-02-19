@@ -55,7 +55,11 @@ public class Queue : DomainObject
     {
         if (ContainsRecord(record))
         {
+            _currentPosition -= 1;
+
             _records.Remove(record);
+
+            MoveToNext();
         }
     }
 
