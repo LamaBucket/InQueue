@@ -5,6 +5,7 @@ using SQA.Domain.Services.Data;
 using SQA.EntityFramework;
 using SQA.EntityFramework.Services;
 using SQA.Web;
+using SQA.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,10 +47,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
