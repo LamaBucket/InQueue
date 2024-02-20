@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 using SQA.Domain;
 using SQA.Domain.Services;
 using SQA.Domain.Services.Data;
+using SQA.EntityFramework.Exceptions;
 using SQA.EntityFramework.Model;
 
 namespace SQA.EntityFramework.Services;
@@ -25,7 +26,7 @@ public class UserDataService : IUserDataService
             var userItem = await dbContext.Set<UserItem>().FirstOrDefaultAsync(x => x.Username == username);
 
             if (userItem is null)
-                throw new Exception();
+                throw new UserDoesNotExistException(username);
 
             dbContext.Set<UserItem>().Remove(userItem);
 
@@ -40,10 +41,10 @@ public class UserDataService : IUserDataService
             var userItem = await dbContext.Set<UserItem>().Include(x => x.Role).FirstOrDefaultAsync(x => x.Username == username);
 
             if (userItem is null)
-                throw new Exception();
+                throw new UserDoesNotExistException(username);
 
             if (userItem.Role is null)
-                throw new Exception();
+                throw new UnableToLoadUserRoleException(username);
 
             UserRoleItem roleItem = userItem.Role;
 
@@ -71,6 +72,9 @@ public class UserDataService : IUserDataService
 
     public async Task Create(string username, string fullName, string password, int roleId)
     {
+        if (await UserExists(username))
+            throw new UserAlreadyExistsException(username);
+
         using (var dbContext = _contextFactory.CreateDbContext())
         {
             string passwordHash = _passwordHasher.HashString(password);
@@ -83,6 +87,15 @@ public class UserDataService : IUserDataService
         }
     }
 
+    private async Task<bool> UserExists(string username)
+    {
+        using (var context = _contextFactory.CreateDbContext())
+        {
+            return await context.Set<UserItem>().AnyAsync(x => x.Username == username);
+        }
+    }
+
+
     public async Task<IEnumerable<User>> Get()
     {
         using (var dbContext = _contextFactory.CreateDbContext())
@@ -94,7 +107,7 @@ public class UserDataService : IUserDataService
             foreach (var userItem in userItems)
             {
                 if (userItem.Role is null)
-                    throw new Exception();
+                    throw new UnableToLoadUserRoleException(userItem.Username);
 
                 UserRoleItem roleItem = userItem.Role;
                 UserRole userRole = new(roleItem.Id, roleItem.Name, roleItem.CanManageUsers, roleItem.CanManageQueues);

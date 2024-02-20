@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SQA.Domain;
+using SQA.EntityFramework.Exceptions;
 using SQA.EntityFramework.Model;
 
 namespace SQA.EntityFramework.Services;
@@ -27,7 +28,7 @@ public class UserRoleDataService : IUserRoleDataService
             var role = await dbContext.Set<UserRoleItem>().FirstOrDefaultAsync(x => x.Id == roleId);
 
             if (role is null)
-                throw new Exception();
+                throw new RoleDoesNotExistException(roleId);
 
             dbContext.Set<UserRoleItem>().Remove(role);
 

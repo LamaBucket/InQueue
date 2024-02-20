@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 using SQA.Domain;
 using SQA.Domain.Services;
 using SQA.Domain.Services.Data;
+using SQA.EntityFramework.Exceptions;
 using SQA.EntityFramework.Model;
 
 namespace SQA.EntityFramework.Services;
@@ -33,8 +34,11 @@ public class QueueDataService : IQueueDataService
         {
             var queueItem = await dbContext.Set<QueueItem>().Include(x => x.Records).FirstOrDefaultAsync(x => x.QueueId == id);
 
-            if (queueItem is null || queueItem.Records is null)
-                throw new Exception();
+            if (queueItem is null)
+                throw new QueueDoesNotExistException(id);
+
+            if (queueItem.Records is null)
+                throw new UnableToLoadQueueRecordsException(id);
 
             var queueRecords = queueItem.Records.Select(x => new QueueRecord(x.Position, x.Username));
 
@@ -113,7 +117,7 @@ public class QueueDataService : IQueueDataService
             var queueItem = await dbContext.Set<QueueItem>().FirstOrDefaultAsync(x => x.QueueId == id);
 
             if (queueItem is null)
-                throw new Exception();
+                throw new QueueDoesNotExistException(id);
 
             dbContext.Set<QueueItem>().Remove(queueItem);
 
