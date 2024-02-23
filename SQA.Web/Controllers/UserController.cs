@@ -63,9 +63,9 @@ public class UserController : AuthenticatedController
 
     private async Task<bool> CanManageUsers()
     {
-        var role = await GetUser();
+        var user = await GetUser();
 
-        return role.CanManageUsers;
+        return user.Role.CanManageUsers;
     }
 
     public UserController(IUserDataService userDataService) : base(userDataService)
