@@ -16,18 +16,6 @@ public class QueueDataService : IQueueDataService
     private readonly IQueueBuilder _queueBuilder;
 
 
-    public async Task<IEnumerable<QueueInfo>> GetAll()
-    {
-        using (var dbContext = _contextFactory.CreateDbContext())
-        {
-            var queueItems = await dbContext.Set<QueueItem>().ToListAsync();
-
-            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, x.DateCreated));
-
-            return queues;
-        }
-    }
-
     public async Task<Queue> Get(int id)
     {
         using (var dbContext = _contextFactory.CreateDbContext())
@@ -43,31 +31,64 @@ public class QueueDataService : IQueueDataService
             var queueRecords = queueItem.Records.Select(x => new QueueRecord(x.Position, x.Username));
 
             var queueInfo = _queueBuilder.CreateQueueInfo(queueItem.QueueId, queueItem.QueueName, queueItem.DateCreated);
-            var queue = _queueBuilder.CreateQueue(queueInfo, queueItem.CurrentPosition, queueItem.IsInfinite, queueRecords);
+            var queue = _queueBuilder.CreateQueue(queueInfo, queueItem.CurrentPosition, queueRecords);
 
             return queue;
         }
     }
 
-    public async Task<IEnumerable<QueueInfo>> GetForUser(string username)
+    public async Task<IEnumerable<UserQueueInfo>> GetForUser(string username)
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
             var queueItems = await dbContext.Set<QueueItem>().Include(x => x.Records!.Where(r => r.Username == username)).ToListAsync();
 
-            var queues = queueItems.Select(x => _queueBuilder.CreateQueueInfo(x.QueueId, x.QueueName, x.DateCreated));
+            List<UserQueueInfo> infos = new();
 
-            return queues;
+            foreach (var queueItem in queueItems)
+            {
+                if (queueItem.Records is null)
+                    throw new UnableToLoadQueueRecordsException(queueItem.QueueId);
+
+                int userRealPosition = GetUserRealPosition(username, queueItem.Records);
+                int userRelativePosition = CalculateUserRelativePosition(queueItem.CurrentPosition, userRealPosition, queueItem.Records);
+
+                UserQueueInfo info = new(userRelativePosition, queueItem.QueueId, queueItem.QueueName, queueItem.DateCreated);
+
+                infos.Add(info);
+            }
+
+            return infos;
         }
     }
 
-    public async Task Create(string queueName, bool isInfinite)
+    private int GetUserRealPosition(string username, IEnumerable<QueueRecordItem> records)
+    {
+        return records.First(x => x.Username == username).Position;
+    }
+
+    private int CalculateUserRelativePosition(int currentPosition, int userPosition, IEnumerable<QueueRecordItem> records)
+    {
+        var recordsArr = records.ToArray();
+        int recordLength = recordsArr.Length;
+
+        int userRelativePosition = userPosition - currentPosition;
+
+        if (userPosition < currentPosition)
+        {
+            userRelativePosition += recordLength;
+        }
+
+        return userRelativePosition;
+    }
+
+    public async Task Create(string queueName)
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
             var dateCreated = DateTime.Now;
 
-            var queueItem = new QueueItem(queueName, isInfinite, dateCreated);
+            var queueItem = new QueueItem(queueName, dateCreated);
 
             await dbContext.Set<QueueItem>().AddAsync(queueItem);
 
@@ -81,7 +102,7 @@ public class QueueDataService : IQueueDataService
         {
             int queueId = queue.QueueInfo.Id;
 
-            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.IsInfinite, queue.CurrentPosition, queue.QueueInfo.Created);
+            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.CurrentPosition, queue.QueueInfo.Created);
 
             dbContext.Set<QueueItem>().Update(item);
 

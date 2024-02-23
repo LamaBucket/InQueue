@@ -8,17 +8,12 @@ public class Queue : DomainObject
 
     public IEnumerable<QueueRecord> Records => _records;
 
-    public bool IsInfinite => _isInfinite;
-
     public int CurrentPosition => _currentPosition;
 
 
     private List<QueueRecord> _records;
 
     private int _currentPosition;
-
-    private bool _isInfinite;
-
 
     public void MoveToNext()
     {
@@ -28,14 +23,10 @@ public class Queue : DomainObject
         bool isLast = CurrentPosition == _records.Count - 1;
 
         if (isLast)
-        {
-            if (IsInfinite)
-                _currentPosition = 0;
+            _currentPosition = 0;
+        else
+            _currentPosition += 1;
 
-            return;
-        }
-
-        _currentPosition += 1;
     }
 
     public void AddUser(string username)
@@ -73,12 +64,11 @@ public class Queue : DomainObject
         return _records.Contains(record);
     }
 
-    internal Queue(QueueInfo queueInfo, int currentPosition, bool isInfinite, IEnumerable<QueueRecord> queueRecords)
+    internal Queue(QueueInfo queueInfo, int currentPosition, IEnumerable<QueueRecord> queueRecords)
     {
         QueueInfo = queueInfo;
         _records = new(queueRecords);
         _currentPosition = currentPosition;
-        _isInfinite = isInfinite;
         _currentPosition = currentPosition;
     }
 }

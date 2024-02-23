@@ -9,25 +9,21 @@ public class QueueItem : DataTableObject
 
     public string QueueName { get; set; }
 
-    public bool IsInfinite { get; set; }
-
     public int CurrentPosition { get; set; }
 
     public DateTime DateCreated { get; set; }
 
 
-    internal QueueItem(string queueName, bool isInfinite, DateTime dateCreated)
+    internal QueueItem(string queueName, DateTime dateCreated)
     {
         QueueName = queueName;
-        IsInfinite = isInfinite;
         DateCreated = dateCreated;
     }
 
-    internal QueueItem(int queueId, string queueName, bool isInfinite, int currentPosition, DateTime dateCreated)
+    internal QueueItem(int queueId, string queueName, int currentPosition, DateTime dateCreated)
     {
         QueueId = queueId;
         QueueName = queueName;
-        IsInfinite = isInfinite;
         CurrentPosition = currentPosition;
         DateCreated = dateCreated;
     }
