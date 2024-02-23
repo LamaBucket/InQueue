@@ -8,8 +8,8 @@ public class QueueBuilder : IQueueBuilder
         return new Queue(info, currentPosition, records);
     }
 
-    public QueueInfo CreateQueueInfo(int id, string name, DateTime dateCreated)
+    public QueueInfo CreateQueueInfo(int id, string name, string ownerUsername, DateTime dateCreated)
     {
-        return new QueueInfo(id, name, dateCreated);
+        return new QueueInfo(id, name, dateCreated, ownerUsername);
     }
 }

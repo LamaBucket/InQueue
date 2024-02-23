@@ -8,7 +8,7 @@ public interface IQueueDataService
 
     Task<Queue> Get(int id);
 
-    Task Create(string queueName);
+    Task Create(string queueName, string ownerUsername);
 
     Task Update(Queue queue);
 

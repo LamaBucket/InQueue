@@ -1,0 +1,8 @@
+Now listening on: http://localhost:5110
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: /Users/gleb/Development/SQA/SQA.Web
+Failed to determine the https port for redirect.
+Info1
+Info2
+Application is shutting down...

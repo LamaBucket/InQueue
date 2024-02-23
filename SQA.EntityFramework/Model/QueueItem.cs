@@ -1,4 +1,6 @@
 
+using SQA.Domain;
+
 namespace SQA.EntityFramework.Model;
 
 public class QueueItem : DataTableObject
@@ -13,18 +15,24 @@ public class QueueItem : DataTableObject
 
     public DateTime DateCreated { get; set; }
 
+    public UserItem? User { get; set; }
 
-    internal QueueItem(string queueName, DateTime dateCreated)
+    public string OwnerUsername { get; set; }
+
+
+    internal QueueItem(string queueName, DateTime dateCreated, string ownerUsername)
     {
         QueueName = queueName;
         DateCreated = dateCreated;
+        OwnerUsername = ownerUsername;
     }
 
-    internal QueueItem(int queueId, string queueName, int currentPosition, DateTime dateCreated)
+    internal QueueItem(int queueId, string queueName, int currentPosition, DateTime dateCreated, string ownerUsername)
     {
         QueueId = queueId;
         QueueName = queueName;
         CurrentPosition = currentPosition;
         DateCreated = dateCreated;
+        OwnerUsername = ownerUsername;
     }
 }

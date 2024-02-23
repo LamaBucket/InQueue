@@ -18,11 +18,11 @@ public abstract class AuthenticatedController : Controller
         }
     }
 
-    protected async Task<UserRole> GetUserRole()
+    protected async Task<User> GetUser()
     {
         var user = await _userDataService.Get(_username);
 
-        return user.Role;
+        return user;
     }
 
     public AuthenticatedController(IUserDataService userDataService)

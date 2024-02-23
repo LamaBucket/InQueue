@@ -1,8 +1,12 @@
+using SQA.Domain;
+
 namespace SQA.EntityFramework.Model;
 
 public class UserItem : DataTableObject
 {
     public List<QueueRecordItem>? Records { get; set; }
+
+    public List<QueueItem>? Queues { get; set; }
 
     public UserRoleItem? Role { get; set; }
 

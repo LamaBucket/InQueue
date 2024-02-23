@@ -11,9 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+//builder.Logging.AddFile("log.txt");
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+builder.Services.AddLogging();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
     options.Cookie.Name = "Authentication";
@@ -47,6 +53,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<LoggerMiddleware>();
 
 app.Run();

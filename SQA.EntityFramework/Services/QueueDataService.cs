@@ -30,12 +30,13 @@ public class QueueDataService : IQueueDataService
 
             var queueRecords = queueItem.Records.Select(x => new QueueRecord(x.Position, x.Username));
 
-            var queueInfo = _queueBuilder.CreateQueueInfo(queueItem.QueueId, queueItem.QueueName, queueItem.DateCreated);
+            var queueInfo = _queueBuilder.CreateQueueInfo(queueItem.QueueId, queueItem.QueueName, queueItem.OwnerUsername, queueItem.DateCreated);
             var queue = _queueBuilder.CreateQueue(queueInfo, queueItem.CurrentPosition, queueRecords);
 
             return queue;
         }
     }
+
 
     public async Task<IEnumerable<UserQueueInfo>> GetForUser(string username)
     {
@@ -53,7 +54,7 @@ public class QueueDataService : IQueueDataService
                 int userRealPosition = GetUserRealPosition(username, queueItem.Records);
                 int userRelativePosition = CalculateUserRelativePosition(queueItem.CurrentPosition, userRealPosition, queueItem.Records);
 
-                UserQueueInfo info = new(userRelativePosition, queueItem.QueueId, queueItem.QueueName, queueItem.DateCreated);
+                UserQueueInfo info = new(userRelativePosition, queueItem.QueueId, queueItem.QueueName, queueItem.OwnerUsername, queueItem.DateCreated);
 
                 infos.Add(info);
             }
@@ -82,13 +83,14 @@ public class QueueDataService : IQueueDataService
         return userRelativePosition;
     }
 
-    public async Task Create(string queueName)
+
+    public async Task Create(string queueName, string ownerUsername)
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
             var dateCreated = DateTime.Now;
 
-            var queueItem = new QueueItem(queueName, dateCreated);
+            var queueItem = new QueueItem(queueName, dateCreated, ownerUsername);
 
             await dbContext.Set<QueueItem>().AddAsync(queueItem);
 
@@ -102,7 +104,7 @@ public class QueueDataService : IQueueDataService
         {
             int queueId = queue.QueueInfo.Id;
 
-            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.CurrentPosition, queue.QueueInfo.Created);
+            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.CurrentPosition, queue.QueueInfo.Created, queue.QueueInfo.OwnerUsername);
 
             dbContext.Set<QueueItem>().Update(item);
 

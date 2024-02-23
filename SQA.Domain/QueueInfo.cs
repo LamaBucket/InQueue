@@ -8,10 +8,18 @@ public class QueueInfo
 
     public DateTime Created { get; init; }
 
-    internal QueueInfo(int id, string name, DateTime created)
+    public string OwnerUsername { get; private set; }
+
+    public void PassLeadership(string username)
+    {
+        OwnerUsername = username;
+    }
+
+    internal QueueInfo(int id, string name, DateTime created, string ownerUsername)
     {
         Id = id;
         Name = name;
         Created = created;
+        OwnerUsername = ownerUsername;
     }
 }

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.EntityFramework", "SQA.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Web", "SQA.Web\SQA.Web.csproj", "{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrated.Loggers", "Integrated.Loggers\Integrated.Loggers.csproj", "{0D1C1737-DD87-4F7E-AE0A-CCB0F4A877A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +42,9 @@ Global
 		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D1C1737-DD87-4F7E-AE0A-CCB0F4A877A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D1C1737-DD87-4F7E-AE0A-CCB0F4A877A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D1C1737-DD87-4F7E-AE0A-CCB0F4A877A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D1C1737-DD87-4F7E-AE0A-CCB0F4A877A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

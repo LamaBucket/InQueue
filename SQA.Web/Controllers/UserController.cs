@@ -63,7 +63,7 @@ public class UserController : AuthenticatedController
 
     private async Task<bool> CanManageUsers()
     {
-        var role = await GetUserRole();
+        var role = await GetUser();
 
         return role.CanManageUsers;
     }

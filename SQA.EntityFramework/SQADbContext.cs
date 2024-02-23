@@ -18,6 +18,8 @@ public class SQADbContext : DbContext
         modelBuilder.Entity<UserRoleItem>().HasKey(e => e.Id);
 
         modelBuilder.Entity<UserItem>().HasOne(x => x.Role).WithMany(x => x.User).HasForeignKey(x => x.RoleId);
+        modelBuilder.Entity<UserItem>().HasMany(x => x.Queues).WithOne(x => x.User).HasForeignKey(x => x.OwnerUsername);
+
 
         modelBuilder.Entity<UserItem>()
             .HasMany<QueueItem>()
