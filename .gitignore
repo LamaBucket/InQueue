@@ -482,3 +482,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+#Custom Files
+SQA.Trash/
+SQA.Test/
+SQA.Web/infos.txt
+SQA.Web/errors.txt
