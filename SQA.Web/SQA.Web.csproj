@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SQA.Domain\SQA.Domain.csproj" />
     <ProjectReference Include="..\SQA.EntityFramework\SQA.EntityFramework.csproj" />
+    <ProjectReference Include="..\integrated.loggers\integrated.loggers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,14 +4,14 @@ namespace Integrated.Loggers;
 
 public class Logger : ScopedLogger
 {
-    private Dictionary<LogLevel, ILoggerDataService> _state;
+    private Dictionary<CustomLogLevel, ILoggerDataService> _state;
 
-    public override bool IsEnabled(LogLevel logLevel)
+    public override bool IsEnabled(CustomLogLevel logLevel)
     {
         return _state.ContainsKey(logLevel);
     }
 
-    protected override void SaveData(LogLevel level, LogMessage message)
+    protected override void SaveData(CustomLogLevel level, LogMessage message)
     {
         if (IsEnabled(level))
         {
@@ -19,7 +19,7 @@ public class Logger : ScopedLogger
         }
     }
 
-    public void AddState(ILoggerDataService service)
+    public void AddDataService(ILoggerDataService service)
     {
         if (_state.ContainsKey(service.Level))
         {

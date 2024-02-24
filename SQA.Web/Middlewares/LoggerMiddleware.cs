@@ -1,4 +1,5 @@
 using System.Net;
+using Integrated.Loggers;
 
 namespace SQA.Web.Middlewares;
 
@@ -6,30 +7,33 @@ public class LoggerMiddleware
 {
     private readonly RequestDelegate _next;
 
-    private readonly ILogger<LoggerMiddleware> _logger;
+    private readonly ICustomLogger _logger;
 
     public async Task InvokeAsync(HttpContext context)
     {
-        try
+        List<ScopeContextItem> scopeContext = new();
+        scopeContext.Add(new("Time", DateTime.Now.ToString()));
+
+        using (var scope = _logger.BeginScope(scopeContext))
         {
-            using (var scope = _logger.BeginScope("Scope1"))
+            try
             {
-                _logger.LogInformation("Info1");
                 await _next(context);
+
+                _logger.LogInformation("Finished Processing the request succesfully");
             }
-            _logger.LogInformation("Info2");
-        }
-        catch (Exception ex)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            _logger.LogError(ex, "Critical Error");
+                _logger.LogError(ex);
 
-            await context.Response.WriteAsync("Internal Server Error");
+                await context.Response.WriteAsync("Internal Server Error");
+            }
         }
     }
 
-    public LoggerMiddleware(RequestDelegate next, ILogger<LoggerMiddleware> logger)
+    public LoggerMiddleware(RequestDelegate next, ICustomLogger logger)
     {
         _next = next;
         _logger = logger;

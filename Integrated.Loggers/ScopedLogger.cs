@@ -1,6 +1,6 @@
 namespace Integrated.Loggers;
 
-public abstract class ScopedLogger : ILogger
+public abstract class ScopedLogger : ICustomLogger
 {
     private Dictionary<ScopeKey, IEnumerable<ScopeContextItem>> _scope;
 
@@ -28,10 +28,10 @@ public abstract class ScopedLogger : ILogger
     }
 
 
-    public abstract bool IsEnabled(LogLevel logLevel);
+    public abstract bool IsEnabled(CustomLogLevel logLevel);
 
 
-    public void Log(Exception? exception, Func<Exception?, string> formatter, LogLevel logLevel)
+    public void Log(Exception? exception, Func<Exception?, string> formatter, CustomLogLevel logLevel)
     {
         if (IsEnabled(logLevel))
         {
@@ -59,7 +59,7 @@ public abstract class ScopedLogger : ILogger
         return result;
     }
 
-    protected abstract void SaveData(LogLevel level, LogMessage message);
+    protected abstract void SaveData(CustomLogLevel level, LogMessage message);
 
     public ScopedLogger()
     {

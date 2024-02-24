@@ -2,15 +2,15 @@ namespace Integrated.Loggers;
 
 public static class ILoggerExtensions
 {
-    public static void LogInformation(this ILogger logger, string message)
+    public static void LogInformation(this ICustomLogger logger, string message)
     {
         Func<Exception?, string> formatter = (e) => { return message; };
-        logger.Log(null, formatter, LogLevel.Information);
+        logger.Log(null, formatter, CustomLogLevel.Information);
     }
 
-    public static void LogError(this ILogger logger, Exception ex)
+    public static void LogError(this ICustomLogger logger, Exception ex)
     {
-        logger.Log(ex, ParseException, LogLevel.Information);
+        logger.Log(ex, ParseException, CustomLogLevel.Information);
     }
 
     private static string ParseException(Exception? ex)
@@ -35,15 +35,15 @@ public static class ILoggerExtensions
 
 }
 
-public enum LogLevel
+public enum CustomLogLevel
 {
     Information,
     Error
 }
 
-public interface ILogger
+public interface ICustomLogger
 {
     IDisposable BeginScope<T>(IEnumerable<T> context) where T : ScopeContextItem;
 
-    void Log(Exception? exception, Func<Exception?, string> formatter, LogLevel level);
+    void Log(Exception? exception, Func<Exception?, string> formatter, CustomLogLevel level);
 }
