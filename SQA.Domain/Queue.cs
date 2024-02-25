@@ -56,6 +56,12 @@ public class Queue : DomainObject
 
         _records.Remove(record);
 
+        for (int i = record.Position + 1; i < _records.Count; i++)
+        {
+            var nextRecord = _records.First(x => x.Position == i);
+            nextRecord.Position = i - 1;
+        }
+
         MoveToNext();
     }
 
