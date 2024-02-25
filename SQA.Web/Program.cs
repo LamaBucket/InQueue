@@ -8,6 +8,7 @@ using SQA.EntityFramework.Services;
 using SQA.Web;
 using SQA.Web.Middlewares;
 using Integrated.Loggers.State;
+using SQA.Web.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.Services.AddLogging();
+builder.Services.AddSignalR();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
@@ -57,6 +58,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseMiddleware<LoggerMiddleware>();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.MapHub<QueueHub>("/queues");
 
 app.Run();
 
