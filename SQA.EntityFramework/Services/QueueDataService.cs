@@ -95,8 +95,27 @@ public class QueueDataService : IQueueDataService
             await dbContext.Set<QueueItem>().AddAsync(queueItem);
 
             await dbContext.SaveChangesAsync();
+
+            await AddUserToQueue(queueItem.QueueId, ownerUsername, 0);
         }
     }
+
+    private async Task AddUserToQueue(int queueId, string username, int position)
+    {
+        using (var dbContext = _contextFactory.CreateDbContext())
+        {
+
+            var queueItem = await dbContext.Set<QueueItem>().Include(x => x.Records).FirstAsync(x => x.QueueId == queueId);
+            var queueRecord = new QueueRecordItem(username, queueItem.QueueId, position);
+
+            queueItem.Records?.Add(queueRecord);
+
+            dbContext.Set<QueueItem>().Update(queueItem);
+
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
 
     public async Task Update(Queue queue)
     {
