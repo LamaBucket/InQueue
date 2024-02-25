@@ -31,6 +31,14 @@ public class QueueHub : AuthenticatedHub
     }
 
 
+    public async Task LoadQueueList()
+    {
+        var queues = await _queueDataService.GetForUser(_username);
+
+        await Clients.Caller.SendAsync("QueueListLoaded", queues);
+    }
+
+
     public async Task MoveNext(int queueId)
     {
         if (await CanMoveNext(queueId))
@@ -115,6 +123,21 @@ public class QueueHub : AuthenticatedHub
     }
 
 
+    public async Task CreateQueue(string name)
+    {
+        string owner = _username;
+
+        await _queueDataService.Create(name, owner);
+
+        await NotifyUserQueueCreated();
+    }
+
+    private async Task NotifyUserQueueCreated()
+    {
+        await Clients.Caller.SendAsync("QueueCreated");
+    }
+
+
     public async Task RemoveQueue(int queueId)
     {
         if (await CanManageQueue(queueId))
@@ -129,6 +152,35 @@ public class QueueHub : AuthenticatedHub
     {
         await GetClientsByQueueId(queueId).SendAsync("QueueRemoved", queueId);
         await StartSendingUpdates(queueId);
+    }
+
+
+    public async Task PassLeadership(int id, string username)
+    {
+        if (await CanManageQueue(id))
+        {
+            string oldOwnerUsername;
+
+            var queue = await _queueDataService.Get(id);
+
+            oldOwnerUsername = queue.QueueInfo.OwnerUsername;
+            queue.QueueInfo.PassLeadership(username);
+
+            await _queueDataService.Update(queue);
+
+            await NotifyUserRemovedOwner(id, oldOwnerUsername);
+            await NotifyUserAddedOwner(id, username);
+        }
+    }
+
+    private async Task NotifyUserRemovedOwner(int queueId, string oldOwnerUsername)
+    {
+        await GetClientByUsername(oldOwnerUsername).SendAsync("RemoveOwner", queueId);
+    }
+
+    private async Task NotifyUserAddedOwner(int queueId, string username)
+    {
+        await GetClientByUsername(username).SendAsync("AddOwner", queueId);
     }
 
 

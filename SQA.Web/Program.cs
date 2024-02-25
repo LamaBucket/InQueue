@@ -62,7 +62,7 @@ app.UseMiddleware<LoggerMiddleware>();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.MapHub<QueueHub>("/queues");
+app.MapHub<QueueHub>("/queue");
 
 app.Run();
 
