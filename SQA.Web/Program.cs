@@ -22,11 +22,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(x => x.EnableDetailedErrors = true);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
     options.Cookie.Name = "Authentication";
+    options.AccessDeniedPath = "/Authenticate";
 });
 builder.Services.AddAuthorization();
 

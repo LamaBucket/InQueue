@@ -4,6 +4,7 @@ using SQA.Domain.Services.Data;
 
 namespace SQA.Web.Controllers;
 
+[Route("[controller]")]
 public class UserController : AuthenticatedController
 {
     private readonly IUserDataService _userDataService;
