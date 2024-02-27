@@ -7,16 +7,17 @@ using SQA.EntityFramework;
 using SQA.EntityFramework.Services;
 using SQA.Web;
 using SQA.Web.Middlewares;
-using Integrated.Loggers.State;
 using SQA.Web.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-var logger = CreateAppLogger();
 
-builder.Services.AddSingleton(logger);
+builder.Services.AddLogging(builder =>
+{
+    builder.AddFile();
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -63,18 +64,3 @@ app.UseMiddleware<LoggerMiddleware>();
 app.MapHub<QueueHub>("/queue");
 
 app.Run();
-
-ICustomLogger CreateAppLogger()
-{
-    string currentDir = Directory.GetCurrentDirectory();
-
-    FileLoggerDataService informationService = new(CustomLogLevel.Information, Path.Combine(currentDir, "infos.txt"));
-    FileLoggerDataService errorService = new(CustomLogLevel.Error, Path.Combine(currentDir, "errors.txt"));
-
-
-    Logger logger = new();
-    logger.AddDataService(informationService);
-    logger.AddDataService(errorService);
-
-    return logger;
-}
