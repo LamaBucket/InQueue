@@ -3,6 +3,7 @@ using SQA.Domain.Services.Data;
 
 namespace SQA.Web.Controllers;
 
+[Route("[controller]")]
 public class LoggingController : AuthenticatedController
 {
     [HttpGet]

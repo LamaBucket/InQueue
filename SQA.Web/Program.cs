@@ -36,6 +36,7 @@ builder.Services.AddTransient<SQADbContextFactory>();
 
 builder.Services.AddScoped<IUserDataService, UserDataService>();
 builder.Services.AddScoped<IQueueDataService, QueueDataService>();
+builder.Services.AddScoped<IUserRoleDataService, UserRoleDataService>();
 
 builder.Services.AddScoped<IStringHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserBuilder, UserBuilder>();
