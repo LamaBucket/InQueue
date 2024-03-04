@@ -33,9 +33,27 @@ public class QueueHub : AuthenticatedHub
 
     public async Task LoadQueueList()
     {
-        var queues = await _queueDataService.GetForUser(_username);
+        var infos = await _queueDataService.GetForUser(_username);
 
-        await Clients.Caller.SendAsync("QueueListLoaded", queues);
+        await NotifyUserQueueListLoaded(infos);
+    }
+
+    private async Task NotifyUserQueueListLoaded(IEnumerable<UserQueueInfo> infos)
+    {
+        await Clients.Caller.SendAsync("QueueListLoaded", infos);
+    }
+
+
+    public async Task LoadQueue(int queueId)
+    {
+        var queue = await _queueDataService.Get(queueId);
+
+        await NotifyUserQueueLoaded(queue);
+    }
+
+    private async Task NotifyUserQueueLoaded(Queue queue)
+    {
+        await Clients.Caller.SendAsync("QueueLoaded", queue);
     }
 
 
