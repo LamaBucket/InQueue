@@ -6,7 +6,7 @@ namespace SQA.EntityFramework;
 
 public class SQADbContextFactory : IDesignTimeDbContextFactory<SQADbContext>
 {
-    public static readonly string ConnectionString = "Data Source=/Users/gleb/Databases/sqa.db;";
+    public static readonly string ConnectionString = "Data Source=D:\\Work\\Development\\InQueue\\test.db;";
 
     public SQADbContext CreateDbContext(string[] args = null!)
     {

@@ -488,3 +488,5 @@ SQA.Trash/
 SQA.Test/
 SQA.Web/infos.txt
 SQA.Web/errors.txt
+
+test.db

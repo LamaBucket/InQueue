@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Domain", "SQA.Domain\SQA.Domain.csproj", "{16B61FF2-3D91-42D6-ABEB-D6FE314358F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Test", "SQA.Test\SQA.Test.csproj", "{596E40E4-9F09-4052-9502-D3D4CC8A933F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.EntityFramework", "SQA.EntityFramework\SQA.EntityFramework.csproj", "{0E29C092-98CF-4727-8301-8DC6D80CA3CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Web", "SQA.Web\SQA.Web.csproj", "{FED5CCF2-771B-4D8F-BFA9-D8FC40BFB778}"
