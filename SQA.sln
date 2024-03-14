@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Web", "SQA.Web\SQA.Web.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrated.Loggers", "Integrated.Loggers\Integrated.Loggers.csproj", "{0D1C1737-DD87-4F7E-AE0A-CCB0F4A877A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQA.Web.MVC", "sqa.web.mvc\SQA.Web.MVC.csproj", "{C58FC597-DDC8-48E2-A608-2F6C6130DB76}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

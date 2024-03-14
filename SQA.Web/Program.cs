@@ -22,6 +22,7 @@ builder.Services.AddLogging(builder =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddMvc();
 
 builder.Services.AddSignalR(x => x.EnableDetailedErrors = true);
 
@@ -55,6 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -63,5 +65,10 @@ app.MapControllers();
 app.UseMiddleware<LoggerMiddleware>();
 
 app.MapHub<QueueHub>("/queue");
+
+app.MapControllerRoute(
+    name: "Default",
+    "{controller}",
+    new { controller = "WebApp"});
 
 app.Run();

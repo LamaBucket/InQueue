@@ -1,0 +1,39 @@
+@model WebAppModel;
+
+<html>
+    <head>
+        <link rel="stylesheet" href="css/WebApp/dropdown.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    </head>
+
+    <body>
+       <div class="dropdown">
+        
+        <button class="dropbtn">Dropdown</button>
+        
+        <div class="dropdown-content">
+            <button class="btnDonate">Donate</button>
+            <button class="btnRename">Rename</button>
+            <button class="btnChangePassword">Change Password</button>
+            @{
+                if(Model.HasAccessToLogs)
+                {
+                    <button class="btnDownloadLog">Download Logs</button>
+                }
+            }
+            <button class="btnLogout">Logout</button>
+            <button class="btnDelete">Delete User</button>
+        </div>
+
+        <div>Welcome back, @Model.UserFullName</div>
+
+
+        <button class="btnAddQueue">New Queue</button>
+
+
+        <script type="text/javascript" src="js/WebApp/userServices.js"></script>
+        <script type="text/javascript" src="js/WebApp/userScripts.js"></script>
+        <script type="text/javascript" src="js/Webapp/queueServices.js"></script>
+         <script type="text/javascript" src="js/Webapp/queueScripts.js"></script>
+    </body>
+</html>
