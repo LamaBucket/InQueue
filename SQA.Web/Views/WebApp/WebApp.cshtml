@@ -3,37 +3,66 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/WebApp/dropdown.css">
+        <link rel="stylesheet" href="css/WebApp/layout.css">
+        <link rel="stylesheet" href="css/WebApp/queuelist.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+        
+        <script type="text/javascript">
+            const Username = "@Model.User.Username"
+        </script>
     </head>
 
-    <body>
-       <div class="dropdown">
-        
-        <button class="dropbtn">Dropdown</button>
-        
-        <div class="dropdown-content">
-            <button class="btnDonate">Donate</button>
-            <button class="btnRename">Rename</button>
-            <button class="btnChangePassword">Change Password</button>
-            @{
-                if(Model.HasAccessToLogs)
-                {
-                    <button class="btnDownloadLog">Download Logs</button>
-                }
-            }
-            <button class="btnLogout">Logout</button>
-            <button class="btnDelete">Delete User</button>
-        </div>
+    <header>
+        <div class="dropdown header">
 
-        <div>Welcome back, @Model.UserFullName</div>
+            <button class="dropdown-main-button">
+                <img src="/assets/hamburger-icon.png">
+            </button>
+            
+            <button class="dropdown-add-button">
+                <img src="/assets/plus-icon.png">
+            </button>
+            
+            <div class="dropdown-content">
+                <button class="drop-btn btnDonate">Donate</button>
+                <button class="drop-btn btnRename">Rename</button>
+                <button class="drop-btn btnChangePassword">Change Password</button>
+                @{
+                    if(Model.HasAccessToLogs)
+                    {
+                        <button class="drop-btn btnDownloadLog">Download Logs</button>
+                    }
+                    @if(Model.User.Role.CanManageUsers)
+                    {
+                        <button class="drop-btn btnCreateUser">Create Local User</button>
+                    }
+                }
+                <button class="drop-btn btnLogout">Logout</button>
+                <button class="drop-btn btnDelete">Delete User</button>
+            </div>
+        </div>
+    </header>
+
+    <body>
+        <div>Welcome back, @Model.User.FullName</div>
 
 
         <button class="btnAddQueue">New Queue</button>
+        
+        <div class="lst_box queues">
+            <div class="lst_item queue">
+                <div class="queueName">Queue1</div>
+                <div class="queuePosition">1</div>
+                <div class="lbl queuePositionLabel"></div>
+                <button class="btnLeaveQueue">X</button>
+            </div>
+        </div>
 
 
         <script type="text/javascript" src="js/WebApp/userServices.js"></script>
         <script type="text/javascript" src="js/WebApp/userScripts.js"></script>
         <script type="text/javascript" src="js/Webapp/queueServices.js"></script>
-         <script type="text/javascript" src="js/Webapp/queueScripts.js"></script>
+        <script type="text/javascript" src="js/Webapp/queueScripts.js"></script>
+         <script type="text/javascript" src="js/Webapp/uiScripts.js"></script>
     </body>
 </html>

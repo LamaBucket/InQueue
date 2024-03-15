@@ -4,13 +4,13 @@ namespace SQA.Web.Models;
 
 public class WebAppModel
 {
-    public string UserFullName { get; init; }
+    public User User { get; set; }
 
     public bool HasAccessToLogs { get; init; }
 
-    public WebAppModel(string userFullName, bool hasAccessToLogs)
+    public WebAppModel(User user, bool hasAccessToLogs)
     {
-        UserFullName = userFullName;
+        User = user;
         HasAccessToLogs = hasAccessToLogs;
     }
 }

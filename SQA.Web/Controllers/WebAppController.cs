@@ -44,7 +44,7 @@ public class WebAppController : Controller
     {
         var user = await GetUser();
         
-        WebAppModel model = new(user.FullName, user.Role.CanManageQueues && user.Role.CanManageUsers);
+        WebAppModel model = new(user, user.Role.CanManageQueues && user.Role.CanManageUsers);
 
         return View(model);
     }

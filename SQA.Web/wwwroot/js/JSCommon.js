@@ -64,3 +64,8 @@ function ValidateString(string)
 
     return string != "";
 }
+
+function Reload()
+{
+    location.reload();
+}

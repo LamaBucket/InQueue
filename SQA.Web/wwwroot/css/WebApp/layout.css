@@ -1,0 +1,10 @@
+body
+{
+    display: grid;
+    grid-template-rows: 1* auto;
+}
+
+.header
+{
+    width: 100%;
+}
