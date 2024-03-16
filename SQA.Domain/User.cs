@@ -25,7 +25,7 @@ public class User : DomainObject
 
     public void UpdatePassword(string oldPassword, string newPassword)
     {
-        if (ValidatePassword(oldPassword))
+        if (!ValidatePassword(oldPassword))
             throw new InvalidPasswordException(Username);
 
         string newPasswordHash = _passwordHasher.HashString(newPassword);

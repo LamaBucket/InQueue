@@ -62,6 +62,9 @@ public class Queue : DomainObject
             nextRecord.Position = i - 1;
         }
 
+        if(_records.Count == 0)
+            return;
+
         MoveToNext();
     }
 
