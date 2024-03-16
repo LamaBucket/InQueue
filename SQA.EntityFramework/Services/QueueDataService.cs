@@ -42,7 +42,7 @@ public class QueueDataService : IQueueDataService
     {
         using (var dbContext = _contextFactory.CreateDbContext())
         {
-            var queueItems = await dbContext.Set<QueueItem>().Include(x => x.Records!.Where(r => r.Username == username)).ToListAsync();
+            var queueItems = await dbContext.Set<QueueItem>().Include(x => x.Records).Where(x => x.Records != null && x.Records.Any(x => x.Username == username)).ToListAsync();
 
             List<UserQueueInfo> infos = new();
 
