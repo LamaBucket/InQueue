@@ -1,37 +1,11 @@
-_onQueueListLoaded = OnQueueListLoaded;
-_onQueuePositionChanged = OnPositionChanged;
-_onQueueCreated = OnQueueCreated;
-_onConnectionStarted = OnConnectionStarted;
-
-$(".btnAddQueue").click(function(){ CreateQueue() });
-
-function CreateQueue()
-{
-    queueName = prompt("Enter Queue Name:");
-
-    RequestCreateQueue(queueName);
-}
+var LEAVEQUEUE_QueueId;
 
 
-
-function OnQueueListLoaded(queues)
-{
-    for(var i in queues)
-    {
-        var queue = queues[i];
-        var position = queue.userPosition;
-        var id = queue.id;
-        var name = queue.name;
-        var owner = queue.ownerUsername;
-        
-        AppendQueueToList(id, position, name, true);
-    }
-}
 
 function AppendQueueToList(id, currentPosition, name, canManage)
 {
     var html_id = "queue_" + id;
-    var html = `<div class="lst_item queue ${html_id}"></div>`;
+    var html = `<div class="lst_item queue ${html_id}" onclick="StartLeaveQueueProcess(${id})"></div>`;
     $(".queues").append(html);
     $("." + html_id).append(`<div class="queueName">${name}</div>`)
     $("." + html_id).append(`<div class="queuePosition">${currentPosition}</div>`)
@@ -39,18 +13,42 @@ function AppendQueueToList(id, currentPosition, name, canManage)
     $("." + html_id).append(`<button class="btnLeaveQueue">X</button>`)
 }
 
-
-function OnPositionChanged(queueId)
+function RemoveQueueFromList(id)
 {
-    Reload();
+    var html_id = "queue_" + id;
+
+    $("." + html_id).remove();
 }
 
-function OnQueueCreated()
+function UpdateQueuePosition(id, position)
 {
-    Reload();
+    var html_id = "queue_" + id;
+
+    $("." + html_id).find(".queuePosition").text(position);
 }
 
-function OnConnectionStarted()
+
+function StartLeaveQueueProcess(id)
 {
-    RequestLoadQueues();
+    LEAVEQUEUE_QueueId = id;
+
+    ShowConfirmLeaveQueueDialog();
 }
+
+
+function CreateQueue()
+{
+    var queueName = GetQueueName();
+    RequestCreateQueue(queueName);
+}
+
+function GetQueueName()
+{
+    return $(".dialog-queue-name").val();
+}
+
+function LeaveQueue()
+{
+    RequestLeaveQueue(LEAVEQUEUE_QueueId);
+}
+

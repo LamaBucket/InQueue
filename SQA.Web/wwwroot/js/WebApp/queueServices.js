@@ -1,11 +1,29 @@
-var _onQueueListLoaded;
-var _onQueuePositionChanged;
-var _onQueueCreated;
 var _onConnectionStarted;
+
+var _onQueueListLoaded;
+var _onQueueLoaded;
+
+var _onQueueCreated;
+var _onQueueRemoved;
+var _onUserRemovedFromQueue;
+
+var _onQueuePositionChanged;
+
 
 const hubConnection = new signalR.HubConnectionBuilder()
 .withUrl("/queue")
 .build();
+
+
+function RequestLoadQueues()
+{
+    hubConnection.invoke("LoadQueueList");
+}
+
+function RequestLoadQueueData(id)
+{
+    hubConnection.inoke("LoadQueue", id);
+}
 
 
 function RequestCreateQueue(queueName)
@@ -13,9 +31,14 @@ function RequestCreateQueue(queueName)
     hubConnection.invoke("CreateQueue", queueName);
 }
 
-function RequestLoadQueues()
+function RequestRemoveQueue(id)
 {
-    hubConnection.invoke("LoadQueueList");
+    hubConnection.invoke("RemoveQueue", id);
+}
+
+function RequestLeaveQueue(id)
+{
+    hubConnection.invoke("LeaveQueue", id);
 }
 
 
@@ -23,12 +46,26 @@ hubConnection.on("QueueListLoaded", function(queues){
     _onQueueListLoaded(queues);
 })
 
-hubConnection.on("PositionChanged", function(queueId){
-    _onQueuePositionChanged(queueId);
+hubConnection.on("QueueLoaded", function(queue){
+    _onQueueLoaded(queue);
 })
+
 
 hubConnection.on("QueueCreated", function(){
     _onQueueCreated();
+})
+
+hubConnection.on("QueueRemoved", function(id){
+    _onQueueRemoved();
+})
+
+hubConnection.on("RemovedFromQueue", function(id){
+    _onUserRemovedFromQueue();
+})
+
+
+hubConnection.on("PositionChanged", function(queueId){
+    _onQueuePositionChanged(queueId);
 })
 
 

@@ -4,26 +4,36 @@
   width: 100%;
 }
 
+
+.dropdown-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .dropdown-main-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 20px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  outline: none;
+    order: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none;
 }
 
 .dropdown-add-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 20px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  outline: none;
+    order: 3;
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-welcome-label {
+    order: 2;
+    margin: 0 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none;
 }
 
 .dropdown-main-button img 
