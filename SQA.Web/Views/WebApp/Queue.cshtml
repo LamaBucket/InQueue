@@ -1,15 +1,41 @@
+@model QueueModel;
+
 <html>
     <head>
+        <link rel="stylesheet" href="/css/queue/style.css">
+        <link rel="stylesheet" href="/css/queue/buttons.css">
 
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+        
+        <script type="text/javascript">
+            const CanManageQueue = Boolean("@Model.CanManageQueue");
+            const QueueId = @Model.Info.Id;
+        </script>
     </head>
 
     <body>
-        <div>
-            <label>Name</label>
-            <label>Date Created</label>
-            <label>Current Position</label>
+        <div class="queue-info">
+            <div class="queue-name">
+                <label for="queue-name">Queue Name:</label>
+                <span id="queue-name">@Model.Info.Name</span>
+            </div>
+            <div class="date-created">
+                <label for="date-created">Date Created:</label>
+                <span id="date-created">@Model.Info.Created.ToString();</span>
+            </div>
         </div>
-        <div>   
+
+        <div class="label-container">
+            <div class="label-large label-current-user"></div>
+            <button class="move-button btnMoveToNext hidden">
+                <img src="/assets/move-to-next.png">
+            </button>
         </div>
+
+        <ul class="user-list">
+        </ul>
     </body>
+
+    <script type="text/javascript" src="/js/queue/queueServices.js"></script>
+    <script type="text/javascript" src="/js/queue/queueScripts.js"></script>
 </html>

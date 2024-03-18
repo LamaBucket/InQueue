@@ -10,6 +10,8 @@ public class WebAppController : Controller
 {
     private readonly IUserDataService _userDataService;
 
+    private readonly IQueueDataService _queueDataService;
+
     protected string _username
     {
         get
@@ -51,13 +53,21 @@ public class WebAppController : Controller
 
     [Authorize]
     [HttpGet("Queue/{id}")]
-    public IActionResult Queue(int id)
+    public async Task<IActionResult> Queue(int id)
     {
-        return View();
+        var user = await GetUser();
+        var queue = await _queueDataService.Get(id);
+
+        bool canManageQueue = queue.QueueInfo.OwnerUsername == user.Username || user.Role.CanManageQueues;
+
+        QueueModel model = new(_username, queue.QueueInfo, canManageQueue);
+
+        return View(model);
     }
 
-    public WebAppController(IUserDataService userDataService)
+    public WebAppController(IUserDataService userDataService, IQueueDataService queueDataService)
     {
         _userDataService = userDataService;
+        _queueDataService = queueDataService;
     }
 }

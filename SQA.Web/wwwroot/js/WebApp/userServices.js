@@ -28,3 +28,16 @@ function RequestChangePassword(oldPassword, newPassword)
 
     SendRequest(endpoint, method, params)
 }
+
+function RequestCreateUser(username, fullName, password, roleId){
+    var endpoint = _defaultEndpoint
+    var method = "POST"
+    var params = {
+      username: username,
+      fullName: fullName,
+      password: password,
+      roleId: roleId
+    }
+
+    SendRequest(endpoint, method, params)
+}

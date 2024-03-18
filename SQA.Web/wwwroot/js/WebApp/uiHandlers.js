@@ -1,7 +1,6 @@
 _onConnectionStarted = OnConnectionStarted;
 
 _onQueueListLoaded = OnQueueListLoaded;
-_onQueueLoaded;
 
 _onQueueCreated = OnQueueCreated;
 _onQueueRemoved = OnQueueRemoved;
@@ -36,9 +35,9 @@ function OnQueueCreated()
     Reload();
 }
 
-function OnQueueRemoved()
+function OnQueueRemoved(id)
 {
-    Reload();
+    RemoveQueueFromList(id);
 }
 
 

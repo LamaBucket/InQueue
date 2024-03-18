@@ -1,0 +1,52 @@
+.queue-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .queue-name, .date-created {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .queue-name label, .date-created label {
+    margin-right: 10px;
+  }
+
+  .user-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+
+  .user-item:nth-child(2) {
+    background-color: #e0e0e0;
+  }
+
+  .user-name {
+    margin: 0;
+  }
+
+  .x-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }

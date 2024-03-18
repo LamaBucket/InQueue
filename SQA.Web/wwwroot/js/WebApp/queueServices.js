@@ -1,7 +1,6 @@
 var _onConnectionStarted;
 
 var _onQueueListLoaded;
-var _onQueueLoaded;
 
 var _onQueueCreated;
 var _onQueueRemoved;
@@ -18,11 +17,6 @@ const hubConnection = new signalR.HubConnectionBuilder()
 function RequestLoadQueues()
 {
     hubConnection.invoke("LoadQueueList");
-}
-
-function RequestLoadQueueData(id)
-{
-    hubConnection.inoke("LoadQueue", id);
 }
 
 
@@ -46,21 +40,16 @@ hubConnection.on("QueueListLoaded", function(queues){
     _onQueueListLoaded(queues);
 })
 
-hubConnection.on("QueueLoaded", function(queue){
-    _onQueueLoaded(queue);
-})
-
-
 hubConnection.on("QueueCreated", function(){
     _onQueueCreated();
 })
 
 hubConnection.on("QueueRemoved", function(id){
-    _onQueueRemoved();
+    _onQueueRemoved(id);
 })
 
 hubConnection.on("RemovedFromQueue", function(id){
-    _onUserRemovedFromQueue();
+    _onUserRemovedFromQueue(id);
 })
 
 
