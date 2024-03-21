@@ -8,6 +8,14 @@ $(document).ready(function() {
 
     closeDialog(dialog);
   });
+
+  $(".btnDonate").on("click", function(){
+    alert("Contact @proka2 in Telegram.");
+  })
+  
+  $(".btnLogout").on("click", function(){
+    RequestLogout();
+  })
 });
 
 const closeDialog = (dialog) => {

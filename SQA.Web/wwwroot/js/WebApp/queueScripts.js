@@ -1,5 +1,10 @@
 var LEAVEQUEUE_QueueId;
 
+$(".btnJoinQueue").on('click', function(){
+    var queueId = prompt("Enter Queue Id:");
+
+    RequestSignInQueue(queueId);
+})
 
 
 function AppendQueueToList(id, currentPosition, name, canManage)
@@ -60,4 +65,3 @@ function LeaveQueue()
 {
     RequestLeaveQueue(LEAVEQUEUE_QueueId);
 }
-

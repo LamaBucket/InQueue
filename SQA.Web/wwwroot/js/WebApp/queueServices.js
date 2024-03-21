@@ -25,6 +25,11 @@ function RequestCreateQueue(queueName)
     hubConnection.invoke("CreateQueue", queueName);
 }
 
+function RequestSignInQueue(queueId)
+{
+    hubConnection.invoke("SignInQueue", queueId);
+}
+
 function RequestRemoveQueue(id)
 {
     hubConnection.invoke("RemoveQueue", id);
