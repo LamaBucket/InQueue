@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SQA.Domain.Services.Data;
 
@@ -26,6 +27,13 @@ public class LogonController : Controller
         }
 
         return BadRequest();
+    }
+
+    [Authorize]
+    [HttpDelete]
+    public ActionResult Logout()
+    {
+        return SignOut();
     }
 
     public LogonController(IUserDataService userDataService)
