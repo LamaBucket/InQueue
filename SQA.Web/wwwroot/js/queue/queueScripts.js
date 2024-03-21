@@ -11,7 +11,7 @@ _onQueueLoaded = OnQueueLoaded;
 _onQueueRemoved = RedirectToWebApp;
 _onUserRemovedFromQueue = RedirectToWebApp;
 
-_onMoveNext;
+_onMoveNext = OnMoveNext;
 _onQueueRecordChanged = OnQueueRecordChanged;
 
 var CurrentQueuePosition = -1;
