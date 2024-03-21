@@ -37,6 +37,7 @@ internal class Program
         {
             options.Cookie.Name = "Authentication";
             options.AccessDeniedPath = "/Authenticate";
+            options.LoginPath = "/Login";
         });
         builder.Services.AddAuthorization();
 
