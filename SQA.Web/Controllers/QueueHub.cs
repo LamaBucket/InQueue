@@ -9,10 +9,13 @@ namespace SQA.Web.Controllers;
 public class QueueHub : AuthenticatedHub
 {
     private readonly IQueueDataService _queueDataService;
-
+    
+    private readonly Dictionary<string, List<string>> _connections;
 
     public override async Task OnConnectedAsync()
     {
+        SaveConnectionId(Context.ConnectionId);
+
         await BindUserToGroups();
 
         await base.OnConnectedAsync();
@@ -204,7 +207,7 @@ public class QueueHub : AuthenticatedHub
 
     protected async Task StartSendingUpdates(int queueId)
     {
-        await Groups.AddToGroupAsync(_username, ConvertQueueIdToGroupId(queueId));
+        await Groups.AddToGroupAsync(Context.ConnectionId, ConvertQueueIdToGroupId(queueId));
     }
 
     protected async Task StopSendingUpdates(int queueId, string? username = null)
@@ -214,7 +217,12 @@ public class QueueHub : AuthenticatedHub
             username = _username;
         }
 
-        await Groups.RemoveFromGroupAsync(username, ConvertQueueIdToGroupId(queueId));
+        var connectionIds = GetConnectionIdsForUser(username);
+
+        foreach(var connectionId in connectionIds)
+        {
+            await Groups.RemoveFromGroupAsync(connectionId, ConvertQueueIdToGroupId(queueId));
+        }
     }
 
 
@@ -233,6 +241,22 @@ public class QueueHub : AuthenticatedHub
     private string ConvertQueueIdToGroupId(int queueId)
     {
         return queueId.ToString();
+    }
+
+
+    protected void SaveConnectionId(string connectionId)
+    {
+        if(!_connections.ContainsKey(_username))
+        {
+            _connections.Add(_username, new());
+        }
+
+        _connections[_username].Add(connectionId);
+    }
+
+    protected IEnumerable<string> GetConnectionIdsForUser(string username)
+    {
+        return _connections[username];
     }
 
 
@@ -269,5 +293,6 @@ public class QueueHub : AuthenticatedHub
     public QueueHub(IQueueDataService queueDataService, IUserDataService userDataService) : base(userDataService)
     {
         _queueDataService = queueDataService;
+        _connections = new();
     }
 }
