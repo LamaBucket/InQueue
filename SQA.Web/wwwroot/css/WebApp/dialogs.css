@@ -31,6 +31,13 @@
     padding: 5px;
 }
 
+.dialog-label-full {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+    padding: 5px;
+}
+
 .dialog-input {
     display: inline-block;
     width: 70%;

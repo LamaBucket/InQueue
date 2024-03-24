@@ -1,11 +1,16 @@
 <html>
+    <head>
+        <link rel="stylesheet" href="/css/login/styles.css">
+    </head>
     <body>
-        <div>
-            <label>Username</label>
-            <input class="username" type="text">
-            <label>Password</label>
-            <input class="password" type="text">
-            <button class="btnLogin">Login</button>
+        <div class="login-form">
+            <label for="username">Username:</label>
+            <input id="username" type="text" class="username" name="username">
+
+            <label for="password">Password:</label>
+            <input id="password" type="password" class="password" name="password">
+            <button class="login-button btnLogin">Login</button>
+            <button class="forgot-password-button">Forgot your password?</button>
         </div>
 
         <script type="text/javascript" src="js/Login/loginServices.js"></script>

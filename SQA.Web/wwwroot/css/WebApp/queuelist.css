@@ -2,6 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    width: 450px;
+    margin: auto;
   }
   
   .lst_item {

@@ -1,0 +1,40 @@
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 50%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.login-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+}
+
+.forgot-password-button:hover {
+    background: #F9F6EE;
+}
+
+.forgot-password-button {
+    background: none;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    margin-top: 10px;
+}

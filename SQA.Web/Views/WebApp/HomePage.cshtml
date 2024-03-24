@@ -2,11 +2,42 @@
 <html>
 <head>
 	<title>InQueue App</title>
+	<style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        div {
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .btn_openWebApp {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn_openWebApp:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 	<div>
 		<h1>Welcome to InQueue App!</h1>
-		<button class="btn_downloadClient">Download Client</button>
 		<button class="btn_openWebApp">Open Web Application</button>
 	</div>
 </body>

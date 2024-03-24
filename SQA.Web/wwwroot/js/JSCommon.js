@@ -1,5 +1,4 @@
 function SendRequest(_endpoint, _type, args, handleResponse = null) {
-    alert(args);
     var url = new URL(window.location.protocol + "//" + window.location.host + "/" + _endpoint);
 
     var query = BuildQuery(args);
