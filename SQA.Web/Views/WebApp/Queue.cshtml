@@ -8,8 +8,21 @@
          <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
         
         <script type="text/javascript">
-            const CanManageQueue = Boolean("@Model.CanManageQueue");
+            var _canManageQueueStr = "@Model.CanManageQueue".toLowerCase();
+            var _canManageQueueVal = true;
+
+            if(_canManageQueueStr == "false")
+            {
+                _canManageQueueVal = false;
+            }
+            else if(_canManageQueueStr != "true"){
+                alert("Something went wrong. please contact adminstrator.");
+                Reload();
+            }
+
+            const CanManageQueue = _canManageQueueVal;
             const QueueId = @Model.Info.Id;
+            const Username = "@Model.Username";
         </script>
     </head>
 

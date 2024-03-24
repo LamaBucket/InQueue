@@ -39,3 +39,11 @@ function CreateUser(){
 
     RequestCreateUser(username, fullName, password, roleId);
 }
+
+function Logout()
+{
+    var endpoint = "Authenticate";
+    var method = "DELETE";
+
+    SendRequest(endpoint, method);
+}

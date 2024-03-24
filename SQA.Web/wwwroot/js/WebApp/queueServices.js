@@ -25,9 +25,11 @@ function RequestCreateQueue(queueName)
     hubConnection.invoke("CreateQueue", queueName);
 }
 
-function RequestSignInQueue(queueId)
+function RequestSignInQueue(id)
 {
-    hubConnection.invoke("SignInQueue", queueId);
+    id = Number(id);
+
+    hubConnection.invoke("SignInQueue", id);
 }
 
 function RequestRemoveQueue(id)
@@ -60,6 +62,11 @@ hubConnection.on("RemovedFromQueue", function(id){
 
 hubConnection.on("PositionChanged", function(queueId){
     _onQueuePositionChanged(queueId);
+})
+
+hubConnection.on("AddedToQueue", function(){
+    EmptyQueueList();
+    RequestLoadQueues();
 })
 
 

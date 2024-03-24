@@ -36,6 +36,10 @@ function RemoveQueueFromList(id)
     $("." + html_id).remove();
 }
 
+function EmptyQueueList(){
+    $(".queues").empty();
+}
+
 
 function StartLeaveQueueProcess(id)
 {

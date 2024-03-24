@@ -14,7 +14,7 @@ $(document).ready(function() {
   })
   
   $(".btnLogout").on("click", function(){
-    RequestLogout();
+    Logout();
   })
 });
 

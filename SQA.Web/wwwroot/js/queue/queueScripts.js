@@ -31,6 +31,7 @@ function ParseRecords(records){
     var currentUsername = records[CurrentQueuePosition].username;
     
     SetCurrentUser(currentUsername);
+    SetMoveNextButtonVisibility(records);
     ClearUserList();
 
     records = EnsureRecordsInRightOrder(records);
@@ -50,6 +51,29 @@ function ParseRecords(records){
 
 function SetCurrentUser(username){
     $(".label-current-user").text(username);
+}
+
+function SetMoveNextButtonVisibility(records){
+    var visible = CanManageQueue || CurrentQueuePosition == GetAbsolutePositionFor(Username, records);
+
+    if(visible){
+        $(".move-button").removeClass("hidden");
+    }
+    else{
+        $(".move-button").addClass("hidden");
+    }
+}
+
+function GetAbsolutePositionFor(username, records){
+    for(i in records){
+        var record = records[i];
+
+        if(record.username == username){
+            return record.position;
+        }
+    }
+
+    return -1;
 }
 
 function EnsureRecordsInRightOrder(records){
