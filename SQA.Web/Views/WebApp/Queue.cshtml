@@ -29,12 +29,15 @@
     <body>
         <div class="queue-info">
             <div class="queue-name">
-                <label for="queue-name">Queue Name:</label>
                 <span id="queue-name">@Model.Info.Name</span>
             </div>
             <div class="date-created">
                 <label for="date-created">Date Created:</label>
-                <span id="date-created">@Model.Info.Created.ToString();</span>
+                <span id="date-created">@Model.Info.Created.ToString("dd/MM/yyyy hh:mm")</span>
+            </div>
+            <div class="queue-id">
+                <label for="queue-id">Queue Id:</label>
+                <span id="queue-id">@Model.Info.Id</span>
             </div>
         </div>
 

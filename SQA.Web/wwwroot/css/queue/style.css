@@ -2,16 +2,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .queue-name, .date-created {
-    display: flex;
-    align-items: center;
     margin-bottom: 10px;
   }
 
-  .queue-name label, .date-created label {
+  .queue-name{
+    font-size: 2em;
+    margin-bottom: 5px;
+  }
+
+  .date-created, .owned-by, .queue-id {
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  .date-created label, .owned-by label, .queue-id label {
     margin-right: 10px;
   }
 
