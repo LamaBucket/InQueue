@@ -26,7 +26,7 @@ public class SQADbContextFactory : IDesignTimeDbContextFactory<SQADbContext>
     {
         if(!File.Exists(path))
         {
-            File.Create(path);
+            File.Create(path).Dispose();
         }
     }
 
