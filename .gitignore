@@ -493,3 +493,4 @@ test.db
 test.db-shm
 test.db-wal
 .DS_Store
+DbPath.txt

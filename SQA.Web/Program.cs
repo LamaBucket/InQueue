@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.SignalR;
 
 internal class Program
 {
+    public static readonly string GuestUsername = "guest";
+
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);

@@ -20,6 +20,9 @@ public class UserController : AuthenticatedController
     [HttpPut("Name")]
     public async Task<ActionResult> Rename(string fullName)
     {
+        if(IsLoggedAsGuest())
+            return Forbid();
+
         var user = await _userDataService.Get(_username);
 
         user.FullName = fullName;
@@ -32,6 +35,9 @@ public class UserController : AuthenticatedController
     [HttpPut("Password")]
     public async Task<ActionResult> ChangePassword(string oldPassword, string newPassword)
     {
+        if(IsLoggedAsGuest())
+            return Forbid();
+
         var user = await _userDataService.Get(_username);
 
         user.UpdatePassword(oldPassword, newPassword);
@@ -44,6 +50,9 @@ public class UserController : AuthenticatedController
     [HttpDelete]
     public async Task<ActionResult> DeleteUser()
     {
+        if(IsLoggedAsGuest())
+            return Forbid();
+
         await _userDataService.Delete(_username);
 
         return Ok();
@@ -67,6 +76,11 @@ public class UserController : AuthenticatedController
         var user = await GetUser();
 
         return user.Role.CanManageUsers;
+    }
+
+    private bool IsLoggedAsGuest()
+    {
+        return _username == Program.GuestUsername;
     }
 
     public UserController(IUserDataService userDataService) : base(userDataService)

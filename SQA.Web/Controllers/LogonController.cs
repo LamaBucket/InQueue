@@ -29,6 +29,21 @@ public class LogonController : Controller
         return BadRequest();
     }
 
+    [HttpPost("/Guest")]
+    public async Task<ActionResult> LoginGuest()
+    {
+        var guestUsername = Program.GuestUsername;
+
+        var guestUser = await _userDataService.Get(guestUsername);
+
+        var claims = new List<Claim>() { new Claim(ClaimTypes.Name, guestUser.Username) };
+        var identity = new ClaimsIdentity(claims, "Cookies");
+        ClaimsPrincipal principal = new(identity);
+
+        return SignIn(principal);
+    }
+
+
     [Authorize]
     [HttpDelete]
     public ActionResult Logout()
