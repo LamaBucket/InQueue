@@ -36,16 +36,14 @@ function ParseRecords(records){
 
     records = EnsureRecordsInRightOrder(records);
 
-    var list_position = 0;
-
-    for(i = CurrentQueuePosition + 1; i < records.length; i++){
+    for(i = CurrentQueuePosition - 1; i >= 0; i--){
         var record = records[i];
-        AppendUser(record.username, list_position);
+        AppendUser(record.username, 0);
     }
-    
-    for(i = 0; i < CurrentQueuePosition; i++){
+
+    for(i = records.length - 1; i >= CurrentQueuePosition + 1; i--){
         var record = records[i];
-        AppendUser(record.username, list_position);
+        AppendUser(record.username, 0);
     }
 }
 
