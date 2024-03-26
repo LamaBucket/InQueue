@@ -119,36 +119,43 @@ public class QueueDataService : IQueueDataService
 
     public async Task Update(Queue queue)
     {
-        using (var dbContext = _contextFactory.CreateDbContext())
+        if(!queue.Records.Any())
         {
-            int queueId = queue.QueueInfo.Id;
-
-            QueueItem item = new(queueId, queue.QueueInfo.Name, queue.CurrentPosition, queue.QueueInfo.Created, queue.QueueInfo.OwnerUsername);
-
-            dbContext.Set<QueueItem>().Update(item);
-
-            await dbContext.SaveChangesAsync();
-
-            item = await dbContext.Set<QueueItem>().Include(x => x.Records).FirstAsync(x => x.QueueId == queueId);
-
-            if (item.Records is not null)
+            await Delete(queue.QueueInfo.Id);
+        }
+        else
+        {
+            using (var dbContext = _contextFactory.CreateDbContext())
             {
-                var records = item.Records;
-                var queueRecords = queue.Records;
+                int queueId = queue.QueueInfo.Id;
 
-                records.Clear();
+                QueueItem item = new(queueId, queue.QueueInfo.Name, queue.CurrentPosition, queue.QueueInfo.Created, queue.QueueInfo.OwnerUsername);
 
-                foreach (var queueRecord in queueRecords)
+                dbContext.Set<QueueItem>().Update(item);
+
+                await dbContext.SaveChangesAsync();
+
+                item = await dbContext.Set<QueueItem>().Include(x => x.Records).FirstAsync(x => x.QueueId == queueId);
+
+                if (item.Records is not null)
                 {
-                    QueueRecordItem queueRecordItem = new(queueRecord.Username, queueId, queueRecord.Position);
+                    var records = item.Records;
+                    var queueRecords = queue.Records;
 
-                    records.Add(queueRecordItem);
+                    records.Clear();
+
+                    foreach (var queueRecord in queueRecords)
+                    {
+                        QueueRecordItem queueRecordItem = new(queueRecord.Username, queueId, queueRecord.Position);
+
+                        records.Add(queueRecordItem);
+                    }
                 }
+
+                dbContext.Set<QueueItem>().Update(item);
+
+                await dbContext.SaveChangesAsync();
             }
-
-            dbContext.Set<QueueItem>().Update(item);
-
-            await dbContext.SaveChangesAsync();
         }
     }
 
