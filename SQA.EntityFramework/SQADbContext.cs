@@ -25,7 +25,7 @@ public class SQADbContext : DbContext
             .HasMany<QueueItem>()
             .WithMany()
             .UsingEntity<QueueRecordItem>(qri => qri.HasOne(x => x.Queue).WithMany(q => q.Records).HasForeignKey(key => key.QueueId),
-            qri => qri.HasOne(x => x.User).WithMany(u => u.Records).HasForeignKey(key => key.Username)).ToTable("QueueRecords");
+            qri => qri.HasOne(x => x.User).WithMany(u => u.Records).HasForeignKey(key => key.Username).OnDelete(DeleteBehavior.Restrict)).ToTable("QueueRecords");
 
         base.OnModelCreating(modelBuilder);
     }
