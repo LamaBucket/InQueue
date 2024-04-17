@@ -10,6 +10,14 @@ function RequestLogin(username, password) {
   SendRequest(_endpoint, method, params, HandleLoginResponse);
 } 
 
+function RequestLoginGuest()
+{
+    var method = "POST"
+    var endpoint = _endpoint + "/Guest"
+    
+    SendRequest(endpoint, method, null, HandleLoginResponse);
+}
+
 function HandleLoginResponse(response){
   var params = new URLSearchParams(window.location.search);
 

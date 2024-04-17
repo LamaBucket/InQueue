@@ -29,7 +29,7 @@ public class LogonController : Controller
         return BadRequest();
     }
 
-    [HttpPost("/Guest")]
+    [HttpPost("Guest")]
     public async Task<ActionResult> LoginGuest()
     {
         var guestUsername = Program.GuestUsername;
