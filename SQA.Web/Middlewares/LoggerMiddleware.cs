@@ -16,8 +16,8 @@ public class LoggerMiddleware
     {
         try
         {
-            string client = context.User?.Identity?.Name ?? context.Request.Host.ToString();
-            string url = context.Request.GetEncodedUrl().ToString();
+            string client = context.User?.Identity?.Name ?? context.GetServerVariable("HTTP_X_FORWARDED_FOR") ?? string.Empty;
+            string url = context.Request.GetEncodedPathAndQuery().ToString();
             string method = context.Request.Method.ToString();
 
             _logger.LogInformation("Caught Request From Client. Time: {Time}, Client: {client}, Query: {query} Method: {method}", DateTime.Now, client, url, method);
